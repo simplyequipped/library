@@ -17,26 +17,12 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
         parsed_path = urllib.parse.urlparse(self.path)
         path = parsed_path.path
         params = urllib.parse.parse_qs(parsed_path.query)
+        service = path.strip(' /')
 
-        if path in services:
-            library = path.split('/')[-1]
-            run_kiwix_serve(library)
-            #TODO test delay to make sure service is running, including on slow platforms like raspberry pi
-            time.sleep(2)
-            # redirect to service url
+        if service in services:
             self.send_response(302)  # temporary redirect
-            self.send_header('Location', get_service_url(library))
+            self.send_header('Location', services[service].get_url())
             self.end_headers()
-
-        elif path == '/files':
-            if 'param' in params:
-                param_value = params['param'][0]
-                result = custom_function(param_value)
-                self.send_response(200)
-                self.send_header('Content-type', 'text/plain')
-                self.end_headers()
-                self.wfile.write(str(result).encode())
-
         else:
             self.send_response(404)
             self.send_header('Content-type', 'text/plain')
@@ -232,7 +218,8 @@ class HTTPService (Service):
         server_address = (self._address, self._port)
         self._server = ThreadedHTTPServer(server_address, LibraryRequestHandler)
 
-        thread = threading.Thread(target=self._run_server)
+        # non-blocking server loop
+        thread = threading.Thread(target=self._server.serve_forever)
         thread.daemon = True
         thread.start()
 
@@ -242,18 +229,11 @@ class HTTPService (Service):
         self._server.server_close()
         self.running = False
 
-    def _run_server(self):
-        try:
-            print('HTTP server is running')
-            print('Press Ctrl-C to stop all services...')
-            self._server.serve_forever()
-        except KeyboardInterrupt:
-            self._parent.stop_all()
-
 
 class Services:
     def __init__(self):
         self._services = {}
+        self.all_stopped = False
         
     def __getitem__(self, name):
         return self._services[name]
@@ -286,12 +266,14 @@ class Services:
         self._services[service.name] = service
 
     def start_all(self):
-        for service in self._services.values():
-            service.start()
+        for nservice in self._services.values():
+                service.start()
 
     def stop_all(self):
         for service in self._services.values():
             service.stop()
+
+        self.all_stopped = True
 
     def next_port(self):
         highest_port = max( [service.get_port() for service in self._services.values()] )
@@ -315,4 +297,15 @@ if __name__ == '__main__':
     
     services.start_all()
     #TODO launch browser to open landing page
+
+    # run until all services are stopped
+    try:
+        print( 'Library services are available at {}'.format( services['landing'].get_url() ) )
+        print('Press Ctrl+C to stop all services...')
+        while True:
+            if services.all_stopped:
+                break
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        self._parent.stop_all()
     
