@@ -3,14 +3,14 @@ from socketserver import ThreadingMixIn
 
 import os
 import time
+import shelex
 import urllib
 import argparse
 import platform
-import threading
 import subprocess
 
 
-class MyRequestHandler(BaseHTTPRequestHandler):
+class LibraryRequestHandler(BaseHTTPRequestHandler):
     connections = set()
 
     def do_GET(self):
@@ -50,8 +50,9 @@ class MyRequestHandler(BaseHTTPRequestHandler):
     def finish(self):
         super().finish()
         self.connections.remove(self.client_address)
+        
         if not self.connections:
-            print("Last client disconnected. Stopping the server.")
+            print("Last client disconnected, stopping services...")
             self.server.shutdown()
             stop_running_services()
 
@@ -60,149 +61,20 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
 
 
-def run_kiwix_libraries():
+def start_services():
     global kiwix_libraries
 
     for library in kiwix_libraries:
         run_kiwix_serve(library)
 
-def run_kiwix_serve(library):
-    global running_services
-    global service_ports
-
-    if library in running_services:
-        return
-
-    _os, _arch, _bit = get_platform_info()
-    kiwix_serve_path = get_kiwix_serve_path()
-    kiwix_library_path = get_kiwix_library_path(library)
-
-    if _os == 'windows':
-        prefix = 'start /b ' # note trailing space
-    if _os == 'linux':
-        prefix = ''
-    if _os == 'darwin':
-        prefix = ''
-
-    # windows example: start /b D:\kiwix\kiwix-tools-windows-x86\kiwix-serve.exe --port 8001 --library D:\kiwix\library_reference.xml
-    cmd = '{}{} --port {} --library {}'.format(prefix, kiwix_serve_path, service_ports[library], kiwix_library_path)
-    
-    thread = threading.Thread(target=start_subprocess_thread, args=(cmd,))
-    thread.daemon = True
-    thread.start()
-
-    running_services.append(library)
-
-def run_file_browser():
-    global service_ports
-    
-    files_path = os.path.join( os.getcwd(), 'files' )
-    # example: python -m http.server 8003 --directory /mnt/ext/files
-    cmd = '{} -m http.server {} --directory {}'.format(get_python_cmd(), service_ports['files'], files_path)
-    thread = threading.Thread(target=start_subprocess_thread, args=(cmd,))
-    thread.daemon = True
-    thread.start()
+    run_file_browser()
 
 #TODO
 def stop_running_services():
     global running_services
 
-def get_python_cmd():
-    try:
-        version = int(subprocess.check_output(['python', '--version'], text=True).split(' ')[1].split('.')[0]) # 'Python 3.9.5' -> ['Python', '3.9.5'] -> ['3', '9', '5'] -> 3
-    except:
-        return 'python3'
 
-    if version == 3:
-        return 'python'
-    else:
-        return 'python3'
 
-def get_platform_info():
-    # see https://download.kiwix.org/release/kiwix-tools/ to determine platform support
-    # kiwix-tools platform support as of Dec 20, 2023:
-    #
-    # windows-x86
-    # linux-x86
-    # linux-armhf (raspberry pi)
-    # linux-armv6
-    # linux-armv8
-    # darmin-x86 (macos)
-    # darmin-arm (macos)
-    
-    _os = platform.system().lower
-    if _os not in ['windows', 'linux', 'darwin']:
-        raise OSError('OS \'{}\' not supported, must be Windows, Linux, or Darwin (MacOS)'.format(_os))
-
-    machine = platform.machine().lower()
-    if 'arm' in machine:
-        _arch = 'arm'
-
-        # get arm version
-        if 'v' in machine:
-            _arch += 'v'
-            _arch += machine.split('v')[1][0] # 'armv71' -> ['arm', '71'] -> '71' -> '7'
-
-         # check if raspberry pi
-        if os.path.isfile('/sys/firmware/devicetree/base/model'):
-            with open('/sys/firmware/devicetree/base/model', 'r') as f:
-                model = f.read()
-                if 'Raspberry Pi' in model:
-                    _arch = 'armhf'
-            
-    elif '64' in machine:
-        if '86' in machine or 'AMD' in machine:
-            _arch = 'x86'
-        else:
-            _arch = None
-    else:
-        _arch = 'x86'
-
-    _bit = platform.architecture()[0].replace('bit', '')
-
-    if _arch is None:
-        raise OSError('Architecture \'{}\' not supported'.format(machine))
-    if _os == 'windows' and _arch not in ['x86']:
-        raise OSError('Architecture \'{}\' not supported on Windows'.format(machine))
-    elif _os == 'linux' and _arch not in ['x86', 'armhf', 'armv6', 'armv8']:
-        raise OSError('Architecture \'{}\' not supported on Linux'.format(machine))
-    elif _os == 'darwin' and _arch not in ['x86', 'arm']:
-        raise OSError('Architecture \'{}\' not supported on Darwin (MacOS)'.format(machine))
-
-    return (_os, _arch, _bit)
-
-def get_kiwix_library_path(library):
-    return os.path.join( os.getcwd(), 'kiwix/library_{}.xml'.format(library) )
-
-def get_kiwix_serve_path():
-    # kiwix-tools directories as of Dec 20, 2023:
-    #
-    # kiwix/kiwix-tools-windows-x86/
-    # kiwix/kiwix-tools-linux-x86/
-    # kiwix/kiwix-tools-linux-armhf/
-    # kiwix/kiwix-tools-linux-armv6/
-    # kiwix/kiwix-tools-linux-armv8/
-    # kiwix/kiwix-tools-darmin-x86/
-    # kiwix/kiwix-tools-darmin-arm/
-    _os, _arch, _bit = get_platform_info()
-    path = 'kiwix/kiwix-tools-{}-{}/kiwix-serve'.format(_os, _arch)
-    
-    if _os == 'windows':
-        path += '.exe'
-
-    return os.path.join(os.getcwd(), path)
-
-def get_service_url(service):
-    global services
-    global service_ports
-    global running_services
-
-    if service not in services:
-        raise ValueError('Service \'{}\' unknown'.format(service))
-    elif service not in running_services:
-        service = 'landing'
-
-    return 'http://localhost/:{}'.format(service_ports[service])
 
 #TODO
 def start_subprocess_thread(kiwix_tools_path):
@@ -210,10 +82,242 @@ def start_subprocess_thread(kiwix_tools_path):
 
 
 
+
+class Service:
+    # service types
+    KIWIX = 'kiwix'
+    FILES = 'files'
+    HTTP  = 'http'
+    
+    def __init__(self, name, port=None):
+        self.name = name
+        self.running = False
+        self._type = None
+        self._process = None
+        self._process_cmd = None
+        self._process_shell = True
+        self._root_path = os.getcwd()
+
+        _os, _arch, _bit = self._get_platform_info()
+        self._platform = {
+            'os': _os,
+            'arch': _arch
+            'bit': _bit
+        }
+
+        if port is not None:
+            self._port = self.set_port(port)
+        else:
+            self._port = None
+
+    def start(self):
+        if self.running or self._process_cmd is None:
+            return
+
+        if self._process_shell:
+            # if shell=True, use arg string
+            cmd = self._process_cmd
+        else:
+            # if shell=False, use arg list
+            cmd = shlex.split(self._process_cmd)
+    
+        self._process = subprocess.Popen(cmd, shell=self._process_shell)
+        self.running = True
+
+    def stop(self)
+        if self._process is None:
+            return
+
+        self._process.terminate()
+
+        try:
+            self._process.wait(timeout = 2)
+        except subprocess.TimeoutExpired:
+            self._process.kill()
+
+        self.running = False
+
+    def set_port(self, port):
+        self._port = port
+        self.url = 'http://localhost/:{}'.format(self._port)
+
+    def _get_cmd_prefix(self):
+        if self._platform['os'] == 'windows':
+            return 'start /b'
+        elif self._platform['os'] == 'linux':
+            return ''
+        elif self._platform['os'] == 'darwin':
+            return ''
+        else:
+            return ''
+
+    def _get_python_cmd(self):
+        try:
+            version = int(subprocess.check_output(['python', '--version'], text=True).split(' ')[1].split('.')[0]) # 'Python 3.9.5' -> ['Python', '3.9.5'] -> ['3', '9', '5'] -> 3
+        except:
+            return 'python3'
+    
+        if version == 3:
+            return 'python'
+        else:
+            return 'python3'
+        
+    def _get_platform_info(self):
+        # see https://download.kiwix.org/release/kiwix-tools/ to determine platform support
+        # kiwix-tools platform support as of Dec 20, 2023:
+        #
+        # windows-x86
+        # linux-x86
+        # linux-armhf (raspberry pi)
+        # linux-armv6
+        # linux-armv8
+        # darmin-x86 (macos)
+        # darmin-arm (macos)
+        
+        _os = platform.system().lower
+        if _os not in ['windows', 'linux', 'darwin']:
+            raise OSError('OS \'{}\' not supported, must be Windows, Linux, or Darwin (MacOS)'.format(_os))
+    
+        machine = platform.machine().lower()
+        if 'arm' in machine:
+            _arch = 'arm'
+    
+            # get arm version
+            if 'v' in machine:
+                _arch += 'v'
+                _arch += machine.split('v')[1][0] # 'armv71' -> ['arm', '71'] -> '71' -> '7'
+    
+             # check if raspberry pi
+            if os.path.isfile('/sys/firmware/devicetree/base/model'):
+                with open('/sys/firmware/devicetree/base/model', 'r') as f:
+                    model = f.read()
+                    if 'Raspberry Pi' in model:
+                        _arch = 'armhf'
+                
+        elif '64' in machine:
+            if '86' in machine or 'AMD' in machine:
+                _arch = 'x86'
+            else:
+                _arch = None
+        else:
+            _arch = 'x86'
+    
+        _bit = platform.architecture()[0].replace('bit', '')
+    
+        if _arch is None:
+            raise OSError('Architecture \'{}\' not supported'.format(machine))
+        if _os == 'windows' and _arch not in ['x86']:
+            raise OSError('Architecture \'{}\' not supported on Windows'.format(machine))
+        elif _os == 'linux' and _arch not in ['x86', 'armhf', 'armv6', 'armv8']:
+            raise OSError('Architecture \'{}\' not supported on Linux'.format(machine))
+        elif _os == 'darwin' and _arch not in ['x86', 'arm']:
+            raise OSError('Architecture \'{}\' not supported on Darwin (MacOS)'.format(machine))
+    
+        return (_os, _arch, _bit)
+
+
+class KiwixService (Service):
+    def __init__(self, name, port=None):
+        super().__init(name, port):
+        self._type = Service.KIWIX
+        self._kiwix_path = os.path.join( self._root_path, 'kiwix')
+        self._library_path = os.path.join( self._kiwix_path, 'library_{}.xml'.format(self.name) )
+
+        self._kiwix_serve_path = 'kiwix-tools-{}-{}/kiwix-serve'.format( self._platform['os'], self._platform['arch'] )
+        if self._platform['os'] == 'windows':
+            self._kiwix_serve_path += '.exe'
+        self._kiwix_serve_path = os.path.join( self._kiwix_path, self._kiwix_serve_path )
+        
+    def start(self):
+        # windows example: start /b D:\kiwix\kiwix-tools-windows-x86\kiwix-serve.exe --port 8001 --library D:\kiwix\library_reference.xml
+        self._process_cmd = '{} {} --port {} --library {}'.format(self._get_cmd_prefix(), self._kiwix_serve_path, self._port, self._library_path).strip()
+        super().start()
+
+
+class FilesService (Service):
+    def __init__(self, name, port=None):
+        super().__init(name, port):
+        self._type = Service.FILES
+        self._files_path = os.path.join( self._root_path, 'files' )
+        
+    def start(self):
+        # example: python -m http.server 8003 --directory /mnt/ext/files
+        self._process_cmd = '{} -m http.server {} --directory {}'.format(self._get_python_cmd(), self._port, self._files_path)
+        super().start()
+
+
+class HTTPService (Service):
+    def __init__(self, name, port=None):
+        super().__init(name, port):
+        self._type = Service.HTTP
+        self._address = None
+        self._server = None
+
+    def set_address(self, address):
+        self._address = address
+        
+    def start(self):
+        server_address = (self._address, self._port)
+        self._server = ThreadedHTTPServer(server_address, LibraryRequestHandler)
+
+    def stop(self):
+        self._server.server_close()
+
+
+    def _run_server(self):
+        global services
+        
+        try:
+            self._server.serve_forever()
+            print('HTTP server is running')
+            print('Press Ctrl-C to stop all services...')
+        except KeyboardInterrupt:
+            services.stop_all()
+
+
+
+
+
+class Services:
+    def __init__(self):
+        self._services = []
+        
+    def __getitem__(self, index):
+        return self._services[index]
+
+    def __setitem__(self, index, value):
+        self._services[index] = value
+
+    def __len__(self):
+        return len(self._services)
+
+    def __iter__(self):
+        return iter(self._services)
+
+    def append(self, value):
+        self._services.append(value)
+
+    def remove(self, value):
+        self._services.remove(value)
+
+    def start_all(self):
+        for service in self._services:
+            service.start()
+
+    def stop_all(self):
+        for service in self._services:
+            service.stop()
+
+
+
+
+
 if __name__ == '__main__':
     kiwix_libraries = ['reference', 'forum']
-    services = kiwix_libraries + ['landing', 'files']
+    services = ['landing', 'files']
+    services += kiwix_libraries
     running_services = []
+    service_ports = {}
     
     program = 'python local_server.py'
     parser = argparse.ArgumentParser(prog=program, description='Offline library access via local HTTP server', epilog = help_epilog)
@@ -230,16 +334,19 @@ if __name__ == '__main__':
             continue
         service_ports[service] = next_port
         next_port += 1
+
+    start_services()
     
     server_address = (args.address, args.port)
     httpd = ThreadedHTTPServer(server_address, MyRequestHandler)
-    print('Server is running and will stop automatically once the last client disconnects')
-    print('Press Ctrl-C to stop the server manually')
+    print('Server is running and will stop automatically when the last client disconnects')
+    print('Services will shutdown after 5 minutes without a client connection')
+    print('Press Ctrl-C to shutdown services manually...')
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
         httpd.server_close()
 
 
-
+#TODO check that services are running without causing them to shutdown as the "last client" disconnects. maybe a timer before shutdown after last client disconnects?
 
