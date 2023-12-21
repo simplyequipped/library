@@ -2,6 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 
 import os
+import json
 import time
 import shelex
 import urllib
@@ -13,7 +14,6 @@ import subprocess
 class LibraryRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         global services
-        
         parsed_path = urllib.parse.urlparse(self.path)
         path = parsed_path.path
         params = urllib.parse.parse_qs(parsed_path.query)
@@ -29,9 +29,83 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'404 - Not Found')
 
+    def do_POST(self):
+        global signals
+        # parse post data
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length).decode('utf-8')
+        data = json.loads(post_data)
+
+        # process signal data
+        if 'signal' in data and data['signal'] in signals:
+            response = signals.parse(data)
+
+        # respond to signal
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+        response_data = json.dumps(response)
+        self.wfile.write( response_data.encode('utf-8') )
+
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
+
+
+class Signals:
+    def __init__(self):
+        self._signals = {
+            'service_url': self._get_service_url,
+            'service_is_running': self._get_service_is_running
+        }
+        
+    def __getitem__(self, name):
+        return self._signals[name]
+
+    def __setitem__(self, name, service):
+        self._signals[name] = service
+
+    def __delitem__(self, name):
+        del self._signals[name]
+
+    def __len__(self):
+        return len(self._signals)
+
+    def __iter__(self):
+        return iter(self._signals)
+
+    def __contains__(self, name):
+        return name in self._signals
+
+    def keys(self):
+        return list(self._signals.keys())
+
+    def values(self):
+        return list(self._signals.values())
+
+    def items(self):
+        return list(self._signals.items())
+
+    def parse(self, data):
+        signal = data['signal']
+        if signal in self._signals:
+            # call custom signal handling function
+            response_data = self._signals[signal](data)
+            return {'signal': signal, 'data': response_data}
+
+    def _get_service_url(self, data):
+        global services
+        service = data['data']
+        
+        if service in services:
+            return services[service].get_url()
+
+    def _get_service_is_running(self, data):
+        global services
+        service = data['data']
+        
+        if service in services:
+            return services[service].is_running()
 
 
 class Service:
@@ -289,6 +363,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--port', help='HTTP server port', default=8000, type=int)
     args = parser.parse_args()
 
+    signals = Signals()
     services = Services()
     services.add( HTTPService(  services, 'landing',   args.address, args.port ) )
     services.add( FilesService( services, 'files',     services.next_port()    ) )
