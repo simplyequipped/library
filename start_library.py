@@ -9,7 +9,7 @@ import signals as _signals
 
 
 if __name__ == '__main__':    
-    program = 'python local_server.py'
+    program = 'python start_library.py'
     parser = argparse.ArgumentParser(prog=program, description='Offline library access via local HTTP server', epilog = help_epilog)
     parser.add_argument('-a', '--address', help='HTTP server address', default='')
     parser.add_argument('-p', '--port', help='HTTP server port', default=8000, type=int)
