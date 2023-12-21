@@ -4,7 +4,8 @@ class Signals:
         self._services = services
         self._signals = {
             'service_url': self._get_service_url,
-            'service_is_running': self._get_service_is_running
+            'service_is_running': self._get_service_is_running,
+            'quit': self._quit
         }
 
     def _get_service_url(self, data):
@@ -16,6 +17,10 @@ class Signals:
         service = data['data']
         if service in self._services:
             return self._services[service].is_running()
+
+    def _quit(self, data):
+        self._services.stop_all()
+        return True
 
     def parse(self, data):
         signal = data['signal']
