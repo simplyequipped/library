@@ -8,15 +8,14 @@ import subprocess
 
 class LibraryRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        global services
         parsed_path = urllib.parse.urlparse(self.path)
         path = parsed_path.path
         params = urllib.parse.parse_qs(parsed_path.query)
         service = path.strip(' /')
 
-        if service in services:
+        if service in self.server.services:
             self.send_response(302)  # temporary redirect
-            self.send_header('Location', services[service].get_url())
+            self.send_header('Location', self.server.services[service].get_url())
             self.end_headers()
         else:
             self.send_response(404)
@@ -25,15 +24,14 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(b'404 - Not Found')
 
     def do_POST(self):
-        global signals
         # parse post data
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length).decode('utf-8')
         data = json.loads(post_data)
 
         # process signal data
-        if 'signal' in data and data['signal'] in signals:
-            response = signals.parse(data)
+        if 'signal' in data and data['signal'] in self.server.signals:
+            response = self.server.signals.parse(data)
 
         # respond to signal
         self.send_response(200)
@@ -45,6 +43,12 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
+    
+    def __init__(self, server_address, RequestHandlerClass, services, signals):
+        # pass services and signals objects to the request handler
+        self.services = services
+        self.signals = signals
+        super().__init__(server_address, RequestHandlerClass)
 
 
 class Service:
@@ -215,8 +219,9 @@ class FilesService (Service):
 
 
 class HTTPService (Service):
-    def __init__(self, parent, name, address=None, port=None):
+    def __init__(self, parent, name, address=None, port=None, signals):
         super().__init(parent, name, port):
+        self._signals = signals
         self._type = Service.HTTP
         self._address = None
         self._server = None
@@ -229,7 +234,8 @@ class HTTPService (Service):
         
     def start(self):
         server_address = (self._address, self._port)
-        self._server = ThreadedHTTPServer(server_address, LibraryRequestHandler)
+        # pass reference to services and signals
+        self._server = ThreadedHTTPServer(server_address, LibraryRequestHandler,  self._parent, self._signals)
 
         # non-blocking server loop
         thread = threading.Thread(target=self._server.serve_forever)
