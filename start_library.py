@@ -11,16 +11,14 @@ import subprocess
 
 
 class LibraryRequestHandler(BaseHTTPRequestHandler):
-    connections = set()
-
     def do_GET(self):
-        global kiwix_libraries
+        global services
         
         parsed_path = urllib.parse.urlparse(self.path)
         path = parsed_path.path
         params = urllib.parse.parse_qs(parsed_path.query)
 
-        if path in ['/kiwix/{}'.format(library) for library in kiwix_libraries]:
+        if path in services:
             library = path.split('/')[-1]
             run_kiwix_serve(library)
             #TODO test delay to make sure service is running, including on slow platforms like raspberry pi
@@ -29,7 +27,6 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
             self.send_response(302)  # temporary redirect
             self.send_header('Location', get_service_url(library))
             self.end_headers()
-            self.connections.add(self.client_address)
 
         elif path == '/files':
             if 'param' in params:
@@ -39,7 +36,6 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'text/plain')
                 self.end_headers()
                 self.wfile.write(str(result).encode())
-                self.connections.add(self.client_address)
 
         else:
             self.send_response(404)
@@ -47,40 +43,9 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'404 - Not Found')
 
-    def finish(self):
-        super().finish()
-        self.connections.remove(self.client_address)
-        
-        if not self.connections:
-            print("Last client disconnected, stopping services...")
-            self.server.shutdown()
-            stop_running_services()
-
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
-
-
-def start_services():
-    global kiwix_libraries
-
-    for library in kiwix_libraries:
-        run_kiwix_serve(library)
-
-    run_file_browser()
-
-#TODO
-def stop_running_services():
-    global running_services
-
-
-
-
-#TODO
-def start_subprocess_thread(kiwix_tools_path):
-    subprocess.run()
-
-
 
 
 class Service:
@@ -89,10 +54,11 @@ class Service:
     FILES = 'files'
     HTTP  = 'http'
     
-    def __init__(self, name, port=None):
+    def __init__(self, parent, name, port=None):
         self.name = name
         self.running = False
         self._type = None
+        self._parent = parent
         self._process = None
         self._process_cmd = None
         self._process_shell = True
@@ -136,6 +102,9 @@ class Service:
             self._process.kill()
 
         self.running = False
+
+    def get_port(self):
+        return self._port
 
     def set_port(self, port):
         self._port = port
@@ -217,8 +186,8 @@ class Service:
 
 
 class KiwixService (Service):
-    def __init__(self, name, port=None):
-        super().__init(name, port):
+    def __init__(self, parent, name, port=None):
+        super().__init(parent, name, port):
         self._type = Service.KIWIX
         self._kiwix_path = os.path.join( self._root_path, 'kiwix')
         self._library_path = os.path.join( self._kiwix_path, 'library_{}.xml'.format(self.name) )
@@ -235,8 +204,8 @@ class KiwixService (Service):
 
 
 class FilesService (Service):
-    def __init__(self, name, port=None):
-        super().__init(name, port):
+    def __init__(self, parent, name, port=None):
+        super().__init(parent, name, port):
         self._type = Service.FILES
         self._files_path = os.path.join( self._root_path, 'files' )
         
@@ -247,12 +216,15 @@ class FilesService (Service):
 
 
 class HTTPService (Service):
-    def __init__(self, name, port=None):
-        super().__init(name, port):
+    def __init__(self, parent, name, address=None, port=None):
+        super().__init(parent, name, port):
         self._type = Service.HTTP
         self._address = None
         self._server = None
 
+    def get_address(self):
+        return self._address
+    
     def set_address(self, address):
         self._address = address
         
@@ -260,33 +232,37 @@ class HTTPService (Service):
         server_address = (self._address, self._port)
         self._server = ThreadedHTTPServer(server_address, LibraryRequestHandler)
 
+        thread = threading.Thread(target=self._run_server)
+        thread.daemon = True
+        thread.start()
+
+        self.running = True
+
     def stop(self):
         self._server.server_close()
-
+        self.running = False
 
     def _run_server(self):
-        global services
-        
         try:
-            self._server.serve_forever()
             print('HTTP server is running')
             print('Press Ctrl-C to stop all services...')
+            self._server.serve_forever()
         except KeyboardInterrupt:
-            services.stop_all()
-
-
-
+            self._parent.stop_all()
 
 
 class Services:
     def __init__(self):
-        self._services = []
+        self._services = {}
         
-    def __getitem__(self, index):
-        return self._services[index]
+    def __getitem__(self, name):
+        return self._services[name]
 
-    def __setitem__(self, index, value):
-        self._services[index] = value
+    def __setitem__(self, name, service):
+        self._services[name] = service
+
+    def __delitem__(self, name):
+        del self._services[name]
 
     def __len__(self):
         return len(self._services)
@@ -294,59 +270,49 @@ class Services:
     def __iter__(self):
         return iter(self._services)
 
-    def append(self, value):
-        self._services.append(value)
+    def __contains__(self, name):
+        return name in self._services
 
-    def remove(self, value):
-        self._services.remove(value)
+    def keys(self):
+        return list(self._services.keys())
+
+    def values(self):
+        return list(self._services.values())
+
+    def items(self):
+        return list(self._services.items())
+
+    def add(self, service):
+        self._services[service.name] = service
 
     def start_all(self):
-        for service in self._services:
+        for service in self._services.values():
             service.start()
 
     def stop_all(self):
-        for service in self._services:
+        for service in self._services.values():
             service.stop()
 
+    def next_port(self):
+        highest_port = max( [service.get_port() for service in self._services.values()] )
+        return highest_port + 1
 
 
 
 
-if __name__ == '__main__':
-    kiwix_libraries = ['reference', 'forum']
-    services = ['landing', 'files']
-    services += kiwix_libraries
-    running_services = []
-    service_ports = {}
-    
+if __name__ == '__main__':    
     program = 'python local_server.py'
     parser = argparse.ArgumentParser(prog=program, description='Offline library access via local HTTP server', epilog = help_epilog)
     parser.add_argument('-a', '--address', help='HTTP server address', default='')
     parser.add_argument('-p', '--port', help='HTTP server port', default=8000, type=int)
     args = parser.parse_args()
 
-    # store network port for landing page
-    service_ports['landing'] = args.port
-    # store network ports for other services, incremented from landing page port
-    next_port = args.port + 1
-    for service in services:
-        if service in service_ports:
-            continue
-        service_ports[service] = next_port
-        next_port += 1
-
-    start_services()
+    services = Services()
+    services.add( HTTPService(  services, 'landing',   args.address, args.port ) )
+    services.add( FilesService( services, 'files',     services.next_port()    ) )
+    services.add( KiwixService( services, 'reference', services.next_port()    ) )
+    services.add( KiwixService( services, 'forum',     services.next_port()    ) )
     
-    server_address = (args.address, args.port)
-    httpd = ThreadedHTTPServer(server_address, MyRequestHandler)
-    print('Server is running and will stop automatically when the last client disconnects')
-    print('Services will shutdown after 5 minutes without a client connection')
-    print('Press Ctrl-C to shutdown services manually...')
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        httpd.server_close()
-
-
-#TODO check that services are running without causing them to shutdown as the "last client" disconnects. maybe a timer before shutdown after last client disconnects?
-
+    services.start_all()
+    #TODO launch browser to open landing page
+    
