@@ -1,15 +1,12 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 
-import os
 import json
 import time
-import shelex
 import urllib
 import argparse
-import platform
-import subprocess
 
+# local imports
 import services as _services
 import signals as _signals
 
