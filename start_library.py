@@ -17,10 +17,10 @@ if __name__ == '__main__':
 
     services = _services.Services()
     signals = _signals.Signals(services)
-    services.add( _services.HTTPService(  services, 'landing',   args.address, args.port ) )
-    services.add( _services.FilesService( services, 'files',     services.next_port()    ) )
-    services.add( _services.KiwixService( services, 'reference', services.next_port()    ) )
-    services.add( _services.KiwixService( services, 'forum',     services.next_port()    ) )
+    services.add( _services.HTTPService(  services, 'landing',   args.address, args.port, signals ) )
+    services.add( _services.FilesService( services, 'files',     services.next_port() ) )
+    services.add( _services.KiwixService( services, 'reference', services.next_port() ) )
+    services.add( _services.KiwixService( services, 'forum',     services.next_port() ) )
     
     services.start_all()
     #TODO launch browser to open landing page
