@@ -8,6 +8,12 @@ import services as _services
 import signals as _signals
 
 
+#TODO
+# - handle ports in index.html (hrefs and ajax)
+# - launch browser to open landing page
+# - set specific path to handle posted signals
+
+
 if __name__ == '__main__':    
     program = 'python start_library.py'
     parser = argparse.ArgumentParser(prog=program, description='Offline library access via local HTTP server', epilog = help_epilog)
