@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Offline Library</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #0288d1;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #01579b; /* darker shade on hover */
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body>
+    <h1>Offline Library</h1>
+    <br >
+    <a href="http://localhost/reference" class="btn">Reference</a><br >
+    <a href="http://localhost/forums" class="btn">Forums</a><br >
+    <a href="http://localhost/files" class="btn">Files</a><br >
+    <a href="#" class="btn" onclick="quit()">Quit</a><br >
+
+    <!-- Hidden message element -->
+    <div id="message" class="hidden"></div>
+    
+    <script>
+        function quit() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost/quit', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    var messageDiv = document.getElementById('message');
+                    if (xhr.status === 200) {
+                        messageDiv.innerHTML = 'Services stopped successfully.';
+                    } else {
+                        messageDiv.innerHTML = 'Failed to stop services.';
+                    }
+                    messageDiv.classList.remove('hidden');
+                }
+            };
+            xhr.onerror = function () {
+                var messageDiv = document.getElementById('message');
+                messageDiv.innerHTML = 'An error occurred while contacting the server.';
+                messageDiv.classList.remove('hidden');
+            };
+            xhr.send(JSON.stringify({ signal: 'quit' }));
+        }
+    </script>
+</body>
+</html>
