@@ -1,24 +1,25 @@
+# Note: all _signals* functions must return a value so a 200 code can be sent
 
 class Signals:
     def __init__(self, services):
         self._services = services
         self._signals = {
-            'service_url': self._get_service_url,
-            'service_is_running': self._get_service_is_running,
-            'quit': self._quit
+            'service_url': self._signal_service_url,
+            'service_active': self._signal_service_active,
+            'quit': self._signal_quit
         }
 
-    def _get_service_url(self, data):
+    def _signal_service_url(self, data):
         service = data['data']
         if service in self._services:
-            return self._services[service].get_url()
+            return self._services[service].url()
 
-    def _get_service_is_running(self, data):
+    def _signal_service_active(self, data):
         service = data['data']
         if service in self._services:
-            return self._services[service].is_running()
+            return self._services[service].active()
 
-    def _quit(self, data):
+    def _signal_quit(self, data):
         self._services.stop_all()
         return True
 
