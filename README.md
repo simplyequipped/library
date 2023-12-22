@@ -48,10 +48,25 @@ The total size of recommended content listed below is 403 GB. See the [Kiwix Lib
 | Wikipedia          | English  | All Maxi  | 2023-11 | 109 GB  | [Download](https://download.kiwix.org/zim/wikipedia/wikipedia_en_all_maxi_2023-11.zim)                                  |
 | Wiktionary         | English  | All Maxi  | 2023-10 | 60 GB   | [Download](https://download.kiwix.org/zim/wiktionary/wiktionary_en_all_maxi_2023-10.zim)                                |
 | Wikiversity        | English  | All Maxi  | 2021-03 | 2.5 GB  | [Download](https://download.kiwix.org/zim/wikiversity/wikiversity_en_all_maxi_2021-03.zim)                              |
-| Wikibooks          | English  | All Maxi  | 2021-03 | 4.5 GB  | [Download](https://download.kiwix.org/zim/wikibooks/wikibooks_en_all_maxi_2021-03.zim)                                  |
+| Wikibooks          | English  | All Maxi  | 2021-03 | 4.6 GB  | [Download](https://download.kiwix.org/zim/wikibooks/wikibooks_en_all_maxi_2021-03.zim)                                  |
 | Wikihow            | English  | Maxi      | 2023-03 | 51 GB   | [Download](https://download.kiwix.org/zim/wikihow/wikihow_en_maxi_2023-03.zim)                                          |
+| OSM Wiki           | English  | All Maxi  | 2023-05 | 932 MB  | [Download](https://download.kiwix.org/zim/other/openstreetmap-wiki_en_all_maxi_2023-05.zim)                             |
+| Wikispecies        | English  | All Maxi  | 2023-12 | 932 MB  | [Download](https://download.kiwix.org/zim/other/wikispecies_en_all_maxi_2023-12.zim)                                    |
+| Wikipedia Medicine | English  | --        | 2023-12 | 1.9 GB  | [Download](https://download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_2023-12.zim)                                  |
+| WikEM (Medical)    | English  | All Maxi  | 2023-12 | 44 MB   | [Download](https://download.kiwix.org/zim/other/wikem_en_all_maxi_2021-02.zim)                                          |
+| Military Medicine  | English  | --        | 2023-12 | 82 MB   | [Download](https://download.kiwix.org/zim/zimit/fas-military-medicine_en_2023-06.zim)                                   |
 | Gutenberg Library  | English  | All       | 2023-11 | 74 GB   | [Download](https://download.kiwix.org/zim/gutenberg/gutenberg_en_all_2023-11.zim)                                       |
-| iFixit             | English  | All       | 2023-10 | 3 GB    | [Download](https://download.kiwix.org/zim/ifixit/ifixit_en_all_2023-10.zim)                                             |
+| iFixit             | English  | All       | 2023-10 | 2.9 GB  | [Download](https://download.kiwix.org/zim/ifixit/ifixit_en_all_2023-10.zim)                                             |
+| ArchWiki           | English  | All       | 2023-10 | 30 MB   | [Download](https://download.kiwix.org/zim/other/archlinux_en_all_maxi_2022-12.zim)                                      |
+| Cheat Sheets       | English  | All       | 2022-04 | 7.3 GB  | [Download](https://download.kiwix.org/zim/zimit/cheatography.com_en_all_2022-04.zim)                                    |
+| Sheet Music        | English  | All       | 2023-09 | 3.7 GB  | [Download](https://download.kiwix.org/zim/zimit/harmony-project.org_en_all_2023-09.zim)                                 |
+| Boundless Courses  | English  | All       | 2021-03 | 12 GB   | [Download](https://download.kiwix.org/zim/zimit/courses.lumenlearning.com_en_all_2021-03.zim)                           |
+| MDN Web Docs       | English  | All       | 2023-02 | 1.7 GB  | [Download](https://download.kiwix.org/zim/zimit/developer.mozilla.org_en_all_2023-02.zim)                               |
+| Off The Grid       | English  | --        | 2023-12 | 172 MB  | [Download](https://download.kiwix.org/zim/zimit/100r-off-the-grid_en_2023-12.zim)                                       |
+| Raspberry Pi Docs  | English  | --        | 2023-01 | 136 MB  | [Download](https://download.kiwix.org/zim/zimit/rapsberry_pi_docs_2023-01.zim)                                          |
+| Army Publishing    | English  | All       | 2023-08 | 8.4 GB  | [Download](https://download.kiwix.org/zim/zimit/armypubs_en_all_2023-08.zim)                                            |
+| Ready.gov          | English  | --        | 2023-12 | 1.9 GB  | [Download](https://download.kiwix.org/zim/zimit/www.ready.gov_en_2023-12.zim)                                           |
+| Kahn Academy - US  | English  | All       | 2023-03 | 180 GB  | [Download](https://download.kiwix.org/zim/other/khanacademy_en_all_2023-03.zim)                                         |
 
 ### Forums ZIM Files (98 GB)
 | Title              | Language | Variant   | Date    | Size    | Link                                                                                                                    |
