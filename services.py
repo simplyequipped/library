@@ -1,11 +1,13 @@
 import os
-import shelex
+import sys
+import shlex
 import socket
 import platform
+import threading
 import subprocess
 
 # local imports
-from libraryhttpserver import ThreadedHTTPServer, LibraryRequestHandler
+from libraryserver import ThreadedHTTPServer, LibraryRequestHandler
 
 
 class Service:
@@ -28,12 +30,12 @@ class Service:
         _os, _arch, _bit = self._get_platform_info()
         self._platform = {
             'os': _os,
-            'arch': _arch
+            'arch': _arch,
             'bit': _bit
         }
 
         if port is not None:
-            self._port = self.set_port(port)
+            self.set_port(port)
         else:
             self._port = None
 
@@ -51,7 +53,7 @@ class Service:
         self._process = subprocess.Popen(cmd, shell=self._process_shell)
         self.running = True
 
-    def stop(self)
+    def stop(self):
         if self._process is None:
             return
 
@@ -69,7 +71,6 @@ class Service:
 
     def set_port(self, port):
         self._port = port
-        self.url = 'http://localhost/:{}'.format(self._port)
 
     def url(self):
         return 'http://localhost:{}/'.format(self._port)
@@ -95,17 +96,6 @@ class Service:
         else:
             return ''
 
-    def _get_python_cmd(self):
-        try:
-            version = int(subprocess.check_output(['python', '--version'], text=True).split(' ')[1].split('.')[0]) # 'Python 3.9.5' -> ['Python', '3.9.5'] -> ['3', '9', '5'] -> 3
-        except:
-            return 'python3'
-    
-        if version == 3:
-            return 'python'
-        else:
-            return 'python3'
-        
     def _get_platform_info(self):
         # see https://download.kiwix.org/release/kiwix-tools/ to determine platform support
         # kiwix-tools platform support as of Dec 20, 2023:
@@ -118,7 +108,7 @@ class Service:
         # darmin-x86 (macos)
         # darmin-arm (macos)
         
-        _os = platform.system().lower
+        _os = platform.system().lower()
         if _os not in ['windows', 'linux', 'darwin']:
             raise OSError('OS \'{}\' not supported, must be Windows, Linux, or Darwin (MacOS)'.format(_os))
     
@@ -162,7 +152,7 @@ class Service:
 
 class KiwixService (Service):
     def __init__(self, parent, name, port=None):
-        super().__init(parent, name, port):
+        super().__init__(parent, name, port)
         self._type = Service.KIWIX
         self._kiwix_path = os.path.join( self._root_path, 'kiwix')
         self._library_path = os.path.join( self._kiwix_path, 'library_{}.xml'.format(self.name) )
@@ -180,25 +170,24 @@ class KiwixService (Service):
 
 class FilesService (Service):
     def __init__(self, parent, name, port=None):
-        super().__init(parent, name, port):
+        super().__init__(parent, name, port)
         self._type = Service.FILES
         self._files_path = os.path.join( self._root_path, 'files' )
         
     def start(self):
         # example: python -m http.server 8003 --directory /mnt/ext/files
-        self._process_cmd = '{} -m http.server {} --directory {}'.format(self._get_python_cmd(), self._port, self._files_path)
+        self._process_cmd = '{} -m http.server {} --directory {}'.format(sys.executable, self._port, self._files_path)
         super().start()
 
 
 class HTTPService (Service):
-    def __init__(self, parent, name, address=None, port=None, signals):
-        super().__init(parent, name, port):
-        self._signals = signals
+    def __init__(self, parent, name, address=None, port=None):
+        super().__init__(parent, name, port)
         self._type = Service.HTTP
-        self._address = None
+        self._address = address
         self._server = None
 
-    def get_address(self):
+    def address(self):
         return self._address
     
     def set_address(self, address):
@@ -206,8 +195,9 @@ class HTTPService (Service):
         
     def start(self):
         server_address = (self._address, self._port)
-        # pass reference to services and signals
-        self._server = ThreadedHTTPServer(server_address, LibraryRequestHandler,  self._parent, self._signals)
+
+        # pass reference to services
+        self._server = ThreadedHTTPServer(server_address, LibraryRequestHandler, self._parent)
 
         # non-blocking server loop
         thread = threading.Thread(target=self._server.serve_forever)
@@ -270,6 +260,6 @@ class Services:
         ports = [service.port() for service in self._services.values()]
 
         if len(ports) == 0:
-            None
+            return None
         
         return max(ports) + 1

@@ -8,7 +8,7 @@ import services as srvcs
 
 if __name__ == '__main__':    
     program = 'python start_library.py'
-    parser = argparse.ArgumentParser(prog=program, description='Offline library access via local HTTP server', epilog = help_epilog)
+    parser = argparse.ArgumentParser(prog=program, description='Offline library services')
     parser.add_argument('-a', '--address', help='HTTP server address', default='')
     parser.add_argument('-p', '--port', help='HTTP server port', default=8000, type=int)
     args = parser.parse_args()
@@ -31,5 +31,5 @@ if __name__ == '__main__':
                 break
             time.sleep(0.5)
     except KeyboardInterrupt:
-        self.services.stop_all()
+        services.stop_all()
     
