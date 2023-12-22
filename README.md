@@ -40,9 +40,9 @@ The following platforms are supported by the included kiwix-tools:
 
 ## Recommended Content
 
-The total size of recommended content listed below is 402 GB. See the [Kiwix Library](https://library.kiwix.org/) for more ZIM content.
+The total size of recommended content listed below is 403 GB. See the [Kiwix Library](https://library.kiwix.org/) for more ZIM content.
 
-### Reference (304 GB)
+### Reference ZIM Files (304 GB)
 | Title              | Language | Variant   | Date    | Size    | Link                                                                                                                    |
 | ------------------ | -------- | --------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
 | Wikipedia          | English  | All Maxi  | 2023-11 | 109 GB  | [Download](https://download.kiwix.org/zim/wikipedia/wikipedia_en_all_maxi_2023-11.zim)                                  |
@@ -53,7 +53,7 @@ The total size of recommended content listed below is 402 GB. See the [Kiwix Lib
 | Gutenberg Library  | English  | All       | 2023-11 | 74 GB   | [Download](https://download.kiwix.org/zim/gutenberg/gutenberg_en_all_2023-11.zim)                                       |
 | iFixit             | English  | All       | 2023-10 | 3 GB    | [Download](https://download.kiwix.org/zim/ifixit/ifixit_en_all_2023-10.zim)                                             |
 
-### Forums (98 GB)
+### Forums ZIM Files (98 GB)
 | Title              | Language | Variant   | Date    | Size    | Link                                                                                                                    |
 | ------------------ | -------- | --------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
 | 3D Printing        | English  | All       | 2023-07 | 99 MB   | [Download](https://download.kiwix.org/zim/stack_exchange/3dprinting.stackexchange.com_en_all_2023-07.zim)               |
