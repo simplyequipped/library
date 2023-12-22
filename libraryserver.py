@@ -4,6 +4,9 @@ import urllib
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 
+# local imports
+import signals
+
 
 class LibraryRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -14,7 +17,7 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
 
         if service in self.server.services:
             self.send_response(302)  # temporary redirect
-            self.send_header('Location', self.server.services[service].get_url())
+            self.send_header( 'Location', self.server.services[service].url() )
             self.end_headers()
         else:
             self.send_response(404)
@@ -46,5 +49,5 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     def __init__(self, server_address, RequestHandlerClass, services, signals):
         # pass services and signals objects to the request handler
         self.services = services
-        self.signals = signals
+        self.signals = signals.Signals(self.services)
         super().__init__(server_address, RequestHandlerClass)
