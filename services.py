@@ -1,5 +1,6 @@
 import os
 import shelex
+import socket
 import platform
 import subprocess
 
@@ -22,6 +23,7 @@ class Service:
         self._process_cmd = None
         self._process_shell = True
         self._root_path = os.getcwd()
+        self._socket_timeout = 2 # seconds
 
         _os, _arch, _bit = self._get_platform_info()
         self._platform = {
@@ -71,6 +73,17 @@ class Service:
 
     def url(self):
         return 'http://localhost:{}/'.format(self._port)
+
+    def active(self):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.settimeout(self._socket_timeout)
+                sock.connect( (host, port) )
+            self.running = True
+        except (socket.timeout, ConnectionRefusedError):
+            self.running = False
+
+        return self.running
 
     def _get_cmd_prefix(self):
         if self._platform['os'] == 'windows':
