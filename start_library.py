@@ -1,17 +1,13 @@
 import time
 import argparse
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from socketserver import ThreadingMixIn
+import webbrowser
 
 # local imports
-import services as _services
-import signals as _signals
+import services as srvcs
 
 
 #TODO
 # - handle ports in index.html (hrefs and ajax)
-# - launch browser to open landing page
-# - set specific path to handle posted signals
 
 
 if __name__ == '__main__':    
@@ -21,24 +17,23 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--port', help='HTTP server port', default=8000, type=int)
     args = parser.parse_args()
 
-    services = _services.Services()
-    signals = _signals.Signals(services)
-    services.add( _services.HTTPService(  services, 'landing',   args.address, args.port, signals ) )
-    services.add( _services.FilesService( services, 'files',     services.next_port() ) )
-    services.add( _services.KiwixService( services, 'reference', services.next_port() ) )
-    services.add( _services.KiwixService( services, 'forum',     services.next_port() ) )
+    services = srvcs.Services()
+    services.add( srvcs.HTTPService(  services, 'landing',   args.address, args.port ) )
+    services.add( srvcs.FilesService( services, 'files',     services.next_port() ) )
+    services.add( srvcs.KiwixService( services, 'reference', services.next_port() ) )
+    services.add( srvcs.KiwixService( services, 'forum',     services.next_port() ) )
     
     services.start_all()
-    #TODO launch browser to open landing page
+    webbrowser.open( services['landing'].url() )
 
     # run until all services are stopped
     try:
-        print('Library services are available at {}'.format( services['landing'].get_url() ) )
+        print('Library services are available at {}'.format( services['landing'].url() ) )
         print('Press Ctrl+C to stop all services...')
         while True:
             if services.all_stopped:
                 break
             time.sleep(0.5)
     except KeyboardInterrupt:
-        self._parent.stop_all()
+        self.services.stop_all()
     
