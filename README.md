@@ -153,8 +153,8 @@ The total size of the recommended content is 548 GB (1 TB drive recommended). Se
 | BalenaEtcher Portable | English | Windows | 2023-12 | 131 MB  | [Download](https://portableapps.com/apps/utilities/balenaetcher-portable)                                               |
 
 ## To Do
-- Create list of recommended downloads in a format that can be automatically downloaded via python script
-- Create an automated utility to build library files once content is downloaded (using kiwix-manage)
+- Create a list of the recommended downloads in a format that can be automatically downloaded via a script
+- Create an automated utility to build library files based on downloaded content using kiwix-manage
 
 ## Attribution
 
