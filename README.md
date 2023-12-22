@@ -40,9 +40,9 @@ The following platforms are supported by the included kiwix-tools:
 
 ## Recommended Content
 
-The total size of recommended content listed below is 403 GB. See the [Kiwix Library](https://library.kiwix.org/) for more ZIM content.
+The total size of the recommended content is 548 GB (1 TB drive recommended). See the [Kiwix Library](https://library.kiwix.org/) for more ZIM content.
 
-### Reference ZIM Files (304 GB)
+### Reference ZIM Files (526 GB)
 | Title              | Language | Variant   | Date    | Size    | Link                                                                                                                    |
 | ------------------ | -------- | --------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
 | Wikipedia          | English  | All Maxi  | 2023-11 | 109 GB  | [Download](https://download.kiwix.org/zim/wikipedia/wikipedia_en_all_maxi_2023-11.zim)                                  |
@@ -68,7 +68,7 @@ The total size of recommended content listed below is 403 GB. See the [Kiwix Lib
 | Ready.gov          | English  | --        | 2023-12 | 1.9 GB  | [Download](https://download.kiwix.org/zim/zimit/www.ready.gov_en_2023-12.zim)                                           |
 | Kahn Academy - US  | English  | All       | 2023-03 | 180 GB  | [Download](https://download.kiwix.org/zim/other/khanacademy_en_all_2023-03.zim)                                         |
 
-### Forums ZIM Files (98 GB)
+### Forums ZIM Files (14 GB)
 | Title              | Language | Variant   | Date    | Size    | Link                                                                                                                    |
 | ------------------ | -------- | --------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
 | 3D Printing        | English  | All       | 2023-07 | 99 MB   | [Download](https://download.kiwix.org/zim/stack_exchange/3dprinting.stackexchange.com_en_all_2023-07.zim)               |
@@ -122,7 +122,7 @@ The total size of recommended content listed below is 403 GB. See the [Kiwix Lib
 | AI                 | English  | All       | 2023-11 | 90 MB   | [Download](https://download.kiwix.org/zim/stack_exchange/ai.stackexchange.com_en_all_2023-10.zim)                       |
 | Health             | English  | All       | 2023-11 | 57 MB   | [Download](https://download.kiwix.org/zim/stack_exchange/health.stackexchange.com_en_all_2023-05.zim)                   |
 
-### Files (1 GB)
+### Files (8 GB)
 | Title              | Language | Variant   | Date    | Size    | Link                                                                                                                    |
 | ------------------ | -------- | --------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
 | Ubuntu v22.04 ISO  | English  | Linux     | 2023-12 | 5 GB    | [Download](https://releases.ubuntu.com/22.04.3/ubuntu-22.04.3-desktop-amd64.iso)                                        |
@@ -151,6 +151,10 @@ The total size of recommended content listed below is 403 GB. See the [Kiwix Lib
 | Eraser Portable    | English  | Windows   | 2023-12 | 1 MB    | [Download](https://portableapps.com/apps/security/eraser-portable)                                                      |
 | 7-Zip Portable     | English  | Windows   | 2023-12 | 3 MB    | [Download](https://portableapps.com/apps/utilities/7-zip_portable)                                                      |
 | BalenaEtcher Portable | English | Windows | 2023-12 | 131 MB  | [Download](https://portableapps.com/apps/utilities/balenaetcher-portable)                                               |
+
+## To Do
+- Create list of recommended downloads in a format that can be automatically downloaded via python script
+- Create an automated utility to build library files once content is downloaded (using kiwix-manage)
 
 ## Attribution
 
