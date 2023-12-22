@@ -62,12 +62,15 @@ class Service:
 
         self.running = False
 
-    def get_port(self):
+    def port(self):
         return self._port
 
     def set_port(self, port):
         self._port = port
         self.url = 'http://localhost/:{}'.format(self._port)
+
+    def url(self):
+        return 'http://localhost:{}/'.format(self._port)
 
     def _get_cmd_prefix(self):
         if self._platform['os'] == 'windows':
@@ -241,8 +244,8 @@ class Services:
         self._services[service.name] = service
 
     def start_all(self):
-        for nservice in self._services.values():
-                service.start()
+        for service in self._services.values():
+            service.start()
 
     def stop_all(self):
         for service in self._services.values():
@@ -251,5 +254,9 @@ class Services:
         self.all_stopped = True
 
     def next_port(self):
-        highest_port = max( [service.get_port() for service in self._services.values()] )
-        return highest_port + 1
+        ports = [service.port() for service in self._services.values()]
+
+        if len(ports) == 0:
+            None
+        
+        return max(ports) + 1
