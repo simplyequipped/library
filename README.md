@@ -107,3 +107,6 @@ The total size of recommended content listed below is 402 GB. See the [Kiwix Lib
 | AI                 | English  | All       | 2023-11 | 90 MB   | [Kiwix Library](https://download.kiwix.org/zim/stack_exchange/ai.stackexchange.com_en_all_2023-10.zim)                  |
 | Health             | English  | All       | 2023-11 | 57 MB   | [Kiwix Library](https://download.kiwix.org/zim/stack_exchange/health.stackexchange.com_en_all_2023-05.zim)              |
 
+## Attribution
+
+Kiwix tools and the linked ZIM libraries are provided by the [Kiwix Association](https://kiwix.org).
