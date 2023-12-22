@@ -107,6 +107,36 @@ The total size of recommended content listed below is 402 GB. See the [Kiwix Lib
 | AI                 | English  | All       | 2023-11 | 90 MB   | [Kiwix Library](https://download.kiwix.org/zim/stack_exchange/ai.stackexchange.com_en_all_2023-10.zim)                  |
 | Health             | English  | All       | 2023-11 | 57 MB   | [Kiwix Library](https://download.kiwix.org/zim/stack_exchange/health.stackexchange.com_en_all_2023-05.zim)              |
 
+### Files (1 GB)
+| Title              | Language | Variant   | Date    | Size    | Link                                                                                                                    |
+| ------------------ | -------- | --------- | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Ubuntu v22.04 ISO  | English  | Linux     | 2023-12 | 5 GB    | [Download](https://releases.ubuntu.com/22.04.3/ubuntu-22.04.3-desktop-amd64.iso)                                        |
+| Digirig Driver     | English  | Windows   | 2023-12 | 0.3 MB  | [Download](https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip)                        |
+| Digirig Driver     | English  | MacOS     | 2023-12 | 2 MB    | [Download](https://www.silabs.com/documents/public/software/Mac_OSX_VCP_Driver.zip)                                     |
+| Chirp-Next         | English  | Windows   | 2023-12 | 28 MB   | [Download](https://trac.chirp.danplanet.com/chirp_next/next-20231220/chirp-next-20231220-installer.exe)                 |
+| Chirp-Next         | English  | MacOS     | 2023-12 | 38 MB   | [Download](https://trac.chirp.danplanet.com/chirp_next/next-20231220/chirp-next-20231220.app.zip)                       |
+| Chirp-Next         | English  | Python    | 2023-12 | 2 MB    | [Download](https://trac.chirp.danplanet.com/chirp_next/next-20231220/chirp-20231220-py3-none-any.whl)                   |
+| JS8Call v2.2.0     | English  | Windows   | 2023-12 | 20 MB   | [Download](http://files.js8call.com/2.2.0/js8call-2.2.0-win32.exe)                                                      |
+| JS8Call v2.2.0     | English  | MacOS     | 2023-12 | 14 MB   | [Download](http://files.js8call.com/2.2.0/js8call-2.2.0-Darwin.dmg)                                                     |
+| JS8Call v2.2.0     | English  | Linux     | 2023-12 | 14 MB   | [Download](http://files.js8call.com/2.2.0/js8call_2.2.0_i386.deb)                                                       |
+| JS8Call v2.2.0     | English  | Rasp. Pi  | 2023-12 | 11 MB   | [Download](http://files.js8call.com/2.2.0/js8call_2.2.0_armhf.deb)                                                      |
+| WSJT-X v2.6.1      | English  | Windows   | 2023-12 | 27 MB   | [Download](https://wsjt.sourceforge.io/downloads/wsjtx-2.6.1-win32.exe)                                                 |
+| WSJT-X v2.6.1      | English  | MacOS     | 2023-12 | 27 MB   | [Download](https://wsjt.sourceforge.io/downloads/wsjtx-2.6.1-Darwin.dmg)                                                |
+| WSJT-X v2.6.1      | English  | Linux     | 2023-12 | 17 MB   | [Download](https://wsjt.sourceforge.io/downloads/wsjtx_2.6.1_amd64.deb)                                                 |
+| WSJT-X v2.6.1      | English  | Rasp. Pi  | 2023-12 | 11 MB   | [Download](https://wsjt.sourceforge.io/downloads/wsjtx_2.6.1_armhf.deb)                                                 |
+| WSJT-X User Guide  | English  | Windows   | 2023-12 | 4 MB    | [Download](https://wsjt.sourceforge.io/wsjtx-doc/wsjtx-main-2.6.1.pdf)                                                  |
+| JS8Call Guide      | English  | --        | 2023-12 | 2 MB    | [Download](https://docs.google.com/document/d/159S4wqMUVdMA7qBgaSWmU-iDI4C9wd4CuWnetN68O9U/edit?usp=sharing)            |
+| Firefox Portable   | English  | Windows   | 2023-12 | 122 MB  | [Download](https://portableapps.com/apps/internet/firefox_portable)                                                     |
+| Bible Portable     | English  | Windows   | 2023-12 | 31 MB   | [Download](https://portableapps.com/apps/education/bpbible_portable)                                                    |
+| VLC Portable       | English  | Windows   | 2023-12 | 41 MB   | [Download](https://portableapps.com/apps/music_video/vlc_portable)                                                      |
+| Notepad++ Portable | English  | Windows   | 2023-12 | 7 MB    | [Download](https://portableapps.com/apps/development/notepadpp_portable)                                                |
+| GIMP Portable      | English  | Windows   | 2023-12 | 212 MB  | [Download](https://portableapps.com/apps/graphics_pictures/gimp_portable)                                               |
+| Audacity Portable  | English  | Windows   | 2023-12 | 24 MB   | [Download](https://portableapps.com/apps/music_video/audacity_portable)                                                 |
+| LibreOffice Portable | English  | Windows | 2023-12 | 197 MB  | [Download](https://portableapps.com/apps/office/libreoffice_portable)                                                   |
+| Eraser Portable    | English  | Windows   | 2023-12 | 1 MB    | [Download](https://portableapps.com/apps/security/eraser-portable)                                                      |
+| 7-Zip Portable     | English  | Windows   | 2023-12 | 3 MB    | [Download](https://portableapps.com/apps/utilities/7-zip_portable)                                                      |
+| BalenaEtcher Portable | English | Windows | 2023-12 | 131 MB  | [Download](https://portableapps.com/apps/utilities/balenaetcher-portable)                                               |
+
 ## Attribution
 
 Kiwix tools and the linked ZIM libraries are provided by the [Kiwix Association](https://kiwix.org).
