@@ -16,10 +16,24 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
         params = urllib.parse.parse_qs(parsed_path.query)
         service = path.strip(' /')
 
-        if service in self.server.services:
+        if path == '/':
+            # library landing html
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('static/index.html', 'r') as f:
+                index_html = f.read()
+
+            # template variable handling
+            index_html = index_html.replace( '{port}', self.server.services['landing'].port() )
+            self.wfile.write( index_html.encode('utf-8') )
+            
+        elif service in self.server.services:
             self.send_response(302)  # temporary redirect
             self.send_header( 'Location', self.server.services[service].url() )
             self.end_headers()
+            
         else:
             self.send_response(404)
             self.send_header('Content-type', 'text/plain')
