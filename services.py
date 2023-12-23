@@ -39,6 +39,9 @@ class Service:
         else:
             # if shell=False, use arg list
             cmd = shlex.split(self._process_cmd)
+
+        if self.parent.debug:
+            print('{}: {}'.format(self.name, cmd))
     
         if self.parent.debug:
             self._process = subprocess.Popen(cmd, shell=self._process_shell)
