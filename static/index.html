@@ -45,6 +45,60 @@
     <div id="message" class="hidden"></div>
     
     <script>
+        const http = require('http');
+
+        function checkServerRunning(port) {
+            return new Promise((resolve, reject) => {
+                const options = {
+                    hostname: 'localhost',
+                    port: port,
+                    path: '/',
+                    method: 'GET',
+                };
+
+                const req = http.request(options, (res) => {
+                    if (res.statusCode === 200) {
+                        resolve(true);
+                    }
+                    else {
+                        resolve(false);
+                    }
+                });
+
+                req.on('error', (error) => {
+                    resolve(false);
+                });
+
+                req.end();
+            });
+        }
+
+        const button1 = document.getElementById('button1');
+        const button2 = document.getElementById('button2');
+        const button3 = document.getElementById('button3');
+
+        const portsToCheck = [3000, 4000, 5000];
+
+        portsToCheck.forEach((port) => {
+            checkServerRunning(port)
+            .then((isRunning) => {
+                if (!isRunning) {
+                    if (port === 3000) {
+                        button1.disabled = true;
+                    }
+                    else if (port === 4000) {
+                        button2.disabled = true;
+                    }
+                    else if (port === 5000) {
+                        button3.disabled = true;
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+
         function quit() {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', 'http://localhost:{port}/signals', true);
