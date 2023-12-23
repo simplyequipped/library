@@ -6,7 +6,12 @@ Offline library services for hosting and accessing ZIM content and other files l
 - All services are designed to run without internet access (after content has been downloaded)
 - All services are designed to run from a USB flash drive or other external drive
 - Only requires Python3 and the contents of this repository (after content has been downloaded)
-- Automatic selection of the appropriate kiwix-tools based on device platform (see the **kiwix-tools** section for supported platforms)
+- Automatic selection of the appropriate kiwix-tools based on device platform (see section **kiwix-tools** for supported platforms)
+
+## Getting Started
+- Add content to *kiwix/zim-reference* and *kiwix/zim-forum* (see section **Recommended Content**)
+- Run *start_library.py*: `python start_library.py`
+- Use the browser window (opened automatically) to navigate the offline content
 
 ## Services
 
