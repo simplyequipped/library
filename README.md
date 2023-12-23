@@ -170,7 +170,6 @@ The total size of the recommended content is 548 GB (1 TB drive recommended). Se
 
 ## To Do
 - Create a list of the recommended downloads in a format that can be automatically downloaded via a script
-- Create an automated utility to build library files based on downloaded content using kiwix-manage
 
 ## Attribution
 
