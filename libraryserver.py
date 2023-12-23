@@ -26,7 +26,7 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
                 index_html = f.read()
 
             # template variable handling
-            index_html = index_html.replace( '{port}', str( self.server.services['landing'].port() ) )
+            index_html = index_html.replace( '{port}', str(self.server.services['landing'].port) )
             self.wfile.write( index_html.encode('utf-8') )
             
         elif service in self.server.services:
@@ -61,6 +61,11 @@ class LibraryRequestHandler(BaseHTTPRequestHandler):
             response_data = json.dumps(response)
             self.wfile.write( response_data.encode('utf-8') )
 
+    def log_message(self, format, *args):
+        if self.server.services.debug:
+            super().log_message(format, *args)
+
+
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
@@ -69,3 +74,4 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
         self.services = services
         self.signals = signals.Signals(self.services)
         super().__init__(server_address, RequestHandlerClass)
+
