@@ -1,0 +1,98 @@
+Service,Title,Language,Variant,Date,Size,Link
+Reference,Wikipedia,English,All Maxi,2023-11,109.000 GB,https://download.kiwix.org/zim/wikipedia/wikipedia_en_all_maxi_2023-11.zim
+Reference,Wiktionary,English,All Maxi,2023-10,60.000 GB,https://download.kiwix.org/zim/wiktionary/wiktionary_en_all_maxi_2023-10.zim
+Reference,Wikiversity,English,All Maxi,2021-03,2.500 GB,https://download.kiwix.org/zim/wikiversity/wikiversity_en_all_maxi_2021-03.zim
+Reference,Wikibooks,English,All Maxi,2021-03,4.600 GB,https://download.kiwix.org/zim/wikibooks/wikibooks_en_all_maxi_2021-03.zim
+Reference,Wikihow,English,Maxi,2023-03,51.000 GB,https://download.kiwix.org/zim/wikihow/wikihow_en_maxi_2023-03.zim
+Reference,OSM Wiki,English,All Maxi,2023-05,0.910 GB,https://download.kiwix.org/zim/other/openstreetmap-wiki_en_all_maxi_2023-05.zim
+Reference,Wikispecies,English,All Maxi,2023-12,0.910 GB,https://download.kiwix.org/zim/other/wikispecies_en_all_maxi_2023-12.zim
+Reference,Wikipedia Medicine,English,--,2023-12,1.900 GB,https://download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_2023-12.zim
+Reference,WikEM (Medical,English,All Maxi,2023-12,0.043 GB,https://download.kiwix.org/zim/other/wikem_en_all_maxi_2021-02.zim)
+Reference,Military Medicine,English,--,2023-12,0.080 GB,https://download.kiwix.org/zim/zimit/fas-military-medicine_en_2023-06.zim
+Reference,Gutenberg Library,English,All,2023-11,74.000 GB,https://download.kiwix.org/zim/gutenberg/gutenberg_en_all_2023-11.zim
+Reference,iFixit,English,All,2023-10,2.900 GB,https://download.kiwix.org/zim/ifixit/ifixit_en_all_2023-10.zim
+Reference,ArchWiki,English,All,2023-10,0.029 GB,https://download.kiwix.org/zim/other/archlinux_en_all_maxi_2022-12.zim
+Reference,Cheat Sheets,English,All,2022-04,7.300 GB,https://download.kiwix.org/zim/zimit/cheatography.com_en_all_2022-04.zim
+Reference,Sheet Music,English,All,2023-09,3.700 GB,https://download.kiwix.org/zim/zimit/harmony-project.org_en_all_2023-09.zim
+Reference,Boundless Courses,English,All,2021-03,12.000 GB,https://download.kiwix.org/zim/zimit/courses.lumenlearning.com_en_all_2021-03.zim
+Reference,MDN Web Docs,English,All,2023-02,1.700 GB,https://download.kiwix.org/zim/zimit/developer.mozilla.org_en_all_2023-02.zim
+Reference,Off The Grid,English,--,2023-12,0.168 GB,https://download.kiwix.org/zim/zimit/100r-off-the-grid_en_2023-12.zim
+Reference,Raspberry Pi Docs,English,--,2023-01,0.133 GB,https://download.kiwix.org/zim/zimit/rapsberry_pi_docs_2023-01.zim
+Reference,Army Publishing,English,All,2023-08,8.400 GB,https://download.kiwix.org/zim/zimit/armypubs_en_all_2023-08.zim
+Reference,Ready.gov,English,--,2023-12,1.900 GB,https://download.kiwix.org/zim/zimit/www.ready.gov_en_2023-12.zim
+Reference,Kahn Academy - US,English,All,2023-03,180.000 GB,https://download.kiwix.org/zim/other/khanacademy_en_all_2023-03.zim
+Forum,3D Printing,English,All,2023-07,0.097 GB,https://download.kiwix.org/zim/stack_exchange/3dprinting.stackexchange.com_en_all_2023-07.zim
+Forum,Astronomy,English,All,2023-05,0.151 GB,https://download.kiwix.org/zim/stack_exchange/astronomy.stackexchange.com_en_all_2023-05.zim
+Forum,Network Eng,English,All,2023-11,0.118 GB,https://download.kiwix.org/zim/stack_exchange/networkengineering.stackexchange.com_en_all_2023-11.zim
+Forum,Cooking,English,All,2023-11,0.212 GB,https://download.kiwix.org/zim/stack_exchange/cooking.stackexchange.com_en_all_2023-11.zim
+Forum,Amateur Radio,English,All,2023-11,0.063 GB,https://download.kiwix.org/zim/stack_exchange/ham.stackexchange.com_en_all_2023-11.zim
+Forum,Woodworking,English,All,2023-11,0.086 GB,https://download.kiwix.org/zim/stack_exchange/woodworking.stackexchange.com_en_all_2023-11.zim
+Forum,Ubuntu,English,All,2023-11,2.000 GB,https://download.kiwix.org/zim/stack_exchange/askubuntu.com_en_all_2023-11.zim
+Forum,Aviation,English,All,2023-05,0.375 GB,https://download.kiwix.org/zim/stack_exchange/aviation.stackexchange.com_en_all_2023-05.zim
+Forum,Biology,English,All,2023-05,0.343 GB,https://download.kiwix.org/zim/stack_exchange/biology.stackexchange.com_en_all_2023-05.zim
+Forum,Home Improvement,English,All,2023-08,0.951 GB,https://download.kiwix.org/zim/stack_exchange/diy.stackexchange.com_en_all_2023-08.zim
+Forum,Engineering,English,All,2023-05,0.190 GB,https://download.kiwix.org/zim/stack_exchange/engineering.stackexchange.com_en_all_2023-05.zim
+Forum,Gardening,English,All,2023-11,0.662 GB,https://download.kiwix.org/zim/stack_exchange/gardening.stackexchange.com_en_all_2023-11.zim
+Forum,Cartography,English,All,2023-11,1.200 GB,https://download.kiwix.org/zim/stack_exchange/gis.stackexchange.com_en_all_2023-11.zim
+Forum,Sys / Net Admin,English,All,2023-11,1.500 GB,https://download.kiwix.org/zim/stack_exchange/serverfault.com_en_all_2023-11.zim
+Forum,Stack Overflow,English,All,2023-11,75.000 GB,https://download.kiwix.org/zim/stack_exchange/stackoverflow.com_en_all_2023-11.zim
+Forum,Super User,English,All,2023-11,2.500 GB,https://download.kiwix.org/zim/stack_exchange/superuser.com_en_all_2023-11.zim
+Forum,Pets,English,All,2023-11,0.078 GB,https://download.kiwix.org/zim/stack_exchange/pets.stackexchange.com_en_all_2023-11.zim
+Forum,Physics,English,All,2023-11,1.400 GB,https://download.kiwix.org/zim/stack_exchange/physics.stackexchange.com_en_all_2023-11.zim
+Forum,Robotics,English,All,2023-11,0.198 GB,https://download.kiwix.org/zim/stack_exchange/robotics.stackexchange.com_en_all_2023-11.zim
+Forum,Space Exploration,English,All,2023-11,0.320 GB,https://download.kiwix.org/zim/stack_exchange/space.stackexchange.com_en_all_2023-11.zim
+Forum,Cartography,English,All,2023-11,0.162 GB,https://download.kiwix.org/zim/stack_exchange/crypto.stackexchange.com_en_all_2023-11.zim
+Forum,Computer Science,English,All,2023-03,0.276 GB,https://download.kiwix.org/zim/stack_exchange/cs.stackexchange.com_en_all_2023-03.zim
+Forum,Martial Arts,English,All,2023-11,0.025 GB,https://download.kiwix.org/zim/stack_exchange/martialarts.stackexchange.com_en_all_2023-11.zim
+Forum,Open Data,English,All,2023-11,0.039 GB,https://download.kiwix.org/zim/stack_exchange/opendata.stackexchange.com_en_all_2023-10.zim
+Forum,Electrical Eng,English,All,2023-11,1.500 GB,https://download.kiwix.org/zim/stack_exchange/electronics.stackexchange.com_en_all_2023-11.zim
+Forum,Parenting,English,All,2023-11,0.057 GB,https://download.kiwix.org/zim/stack_exchange/parenting.stackexchange.com_en_all_2023-11.zim
+Forum,Android,English,All,2023-10,0.349 GB,https://download.kiwix.org/zim/stack_exchange/android.stackexchange.com_en_all_2023-10.zim
+Forum,Bioinformatics,English,All,2023-10,0.048 GB,https://download.kiwix.org/zim/stack_exchange/bioinformatics.stackexchange.com_en_all_2023-10.zim
+Forum,Chemistry,English,All,2023-11,0.336 GB,https://download.kiwix.org/zim/stack_exchange/chemistry.stackexchange.com_en_all_2023-11.zim
+Forum,Economics,English,All,2023-11,0.101 GB,https://download.kiwix.org/zim/stack_exchange/economics.stackexchange.com_en_all_2023-11.zim
+Forum,Earth Science,English,All,2023-11,0.114 GB,https://download.kiwix.org/zim/stack_exchange/earthscience.stackexchange.com_en_all_2023-11.zim
+Forum,Law,English,All,2023-11,0.153 GB,https://download.kiwix.org/zim/stack_exchange/law.stackexchange.com_en_all_2023-11.zim
+Forum,Mathematics,English,All,2023-11,5.400 GB,https://download.kiwix.org/zim/stack_exchange/math.stackexchange.com_en_all_2023-08.zim
+Forum,Quantum Computing,English,All,2023-10,0.071 GB,https://download.kiwix.org/zim/stack_exchange/quantumcomputing.stackexchange.com_en_all_2023-10.zim
+Forum,Raspberry Pi,English,All,2023-11,0.272 GB,https://download.kiwix.org/zim/stack_exchange/raspberrypi.stackexchange.com_en_all_2023-11.zim
+Forum,Arduino,English,All,2023-05,0.226 GB,https://download.kiwix.org/zim/stack_exchange/arduino.stackexchange.com_en_all_2023-05.zim
+Forum,Software Eng,English,All,2023-11,0.454 GB,https://download.kiwix.org/zim/stack_exchange/softwareengineering.stackexchange.com_en_all_2023-11.zim
+Forum,Vi and Vim,English,All,2023-11,0.076 GB,https://download.kiwix.org/zim/stack_exchange/vi.stackexchange.com_en_all_2023-11.zim
+Forum,Signal Processing,English,All,2023-11,0.288 GB,https://download.kiwix.org/zim/stack_exchange/dsp.stackexchange.com_en_all_2023-11.zim
+Forum,Unix / Linux,English,All,2023-11,1.200 GB,https://download.kiwix.org/zim/stack_exchange/unix.stackexchange.com_en_all_2023-11.zim
+Forum,Car Mechanics,English,All,2023-11,0.270 GB,https://download.kiwix.org/zim/stack_exchange/mechanics.stackexchange.com_en_all_2023-11.zim
+Forum,Philosophy,English,All,2023-11,0.151 GB,https://download.kiwix.org/zim/stack_exchange/philosophy.stackexchange.com_en_all_2023-11.zim
+Forum,Statistics,English,All,2023-11,1.200 GB,https://download.kiwix.org/zim/stack_exchange/stats.stackexchange.com_en_all_2023-11.zim
+Forum,Writing,English,All,2023-11,0.093 GB,https://download.kiwix.org/zim/stack_exchange/writers.stackexchange.com_en_all_2023-11.zim
+Forum,Sustainable Living,English,All,2023-11,0.025 GB,https://download.kiwix.org/zim/stack_exchange/sustainability.stackexchange.com_en_all_2023-11.zim
+Forum,Data Science,English,All,2023-11,0.243 GB,https://download.kiwix.org/zim/stack_exchange/datascience.stackexchange.com_en_all_2023-10.zim
+Forum,Outdoors,English,All,2023-11,0.127 GB,https://download.kiwix.org/zim/stack_exchange/outdoors.stackexchange.com_en_all_2023-11.zim
+Forum,Reverse Eng,English,All,2023-11,0.103 GB,https://download.kiwix.org/zim/stack_exchange/reverseengineering.stackexchange.com_en_all_2023-11.zim
+Forum,AI,English,All,2023-11,0.088 GB,https://download.kiwix.org/zim/stack_exchange/ai.stackexchange.com_en_all_2023-10.zim
+Forum,Health,English,All,2023-11,0.056 GB,https://download.kiwix.org/zim/stack_exchange/health.stackexchange.com_en_all_2023-05.zim
+Files,Ubuntu v22.04 ISO,English,Linux,2023-12,5.000 GB,https://releases.ubuntu.com/22.04.3/ubuntu-22.04.3-desktop-amd64.iso
+Files,Digirig Driver,English,Windows,2023-12,0.001 GB,https://www.silabs.com/documents/public/software/CP210x_Universal_Windows_Driver.zip
+Files,Digirig Driver,English,MacOS,2023-12,0.002 GB,https://www.silabs.com/documents/public/software/Mac_OSX_VCP_Driver.zip
+Files,Chirp-Next,English,Windows,2023-12,0.027 GB,https://trac.chirp.danplanet.com/chirp_next/next-20231220/chirp-next-20231220-installer.exe
+Files,Chirp-Next,English,MacOS,2023-12,0.037 GB,https://trac.chirp.danplanet.com/chirp_next/next-20231220/chirp-next-20231220.app.zip
+Files,Chirp-Next,English,Python,2023-12,0.002 GB,https://trac.chirp.danplanet.com/chirp_next/next-20231220/chirp-20231220-py3-none-any.whl
+Files,JS8Call v2.2.0,English,Windows,2023-12,0.020 GB,http://files.js8call.com/2.2.0/js8call-2.2.0-win32.exe
+Files,JS8Call v2.2.0,English,MacOS,2023-12,0.014 GB,http://files.js8call.com/2.2.0/js8call-2.2.0-Darwin.dmg
+Files,JS8Call v2.2.0,English,Linux,2023-12,0.014 GB,http://files.js8call.com/2.2.0/js8call_2.2.0_i386.deb
+Files,JS8Call v2.2.0,English,Rasp. Pi,2023-12,0.011 GB,http://files.js8call.com/2.2.0/js8call_2.2.0_armhf.deb
+Files,WSJT-X v2.6.1,English,Windows,2023-12,0.026 GB,https://wsjt.sourceforge.io/downloads/wsjtx-2.6.1-win32.exe
+Files,WSJT-X v2.6.1,English,MacOS,2023-12,0.026 GB,https://wsjt.sourceforge.io/downloads/wsjtx-2.6.1-Darwin.dmg
+Files,WSJT-X v2.6.1,English,Linux,2023-12,0.017 GB,https://wsjt.sourceforge.io/downloads/wsjtx_2.6.1_amd64.deb
+Files,WSJT-X v2.6.1,English,Rasp. Pi,2023-12,0.011 GB,https://wsjt.sourceforge.io/downloads/wsjtx_2.6.1_armhf.deb
+Files,WSJT-X User Guide,English,Windows,2023-12,0.004 GB,https://wsjt.sourceforge.io/wsjtx-doc/wsjtx-main-2.6.1.pdf
+Files,Firefox Portable,English,Windows,2023-12,0.119 GB,https://portableapps.com/apps/internet/firefox_portable
+Files,Bible Portable,English,Windows,2023-12,0.030 GB,https://portableapps.com/apps/education/bpbible_portable
+Files,VLC Portable,English,Windows,2023-12,0.040 GB,https://portableapps.com/apps/music_video/vlc_portable
+Files,Notepad++ Portable,English,Windows,2023-12,0.007 GB,https://portableapps.com/apps/development/notepadpp_portable
+Files,GIMP Portable,English,Windows,2023-12,0.207 GB,https://portableapps.com/apps/graphics_pictures/gimp_portable
+Files,Audacity Portable,English,Windows,2023-12,0.023 GB,https://portableapps.com/apps/music_video/audacity_portable
+Files,LibreOffice Portable,English,Windows,2023-12,0.192 GB,https://portableapps.com/apps/office/libreoffice_portable
+Files,Eraser Portable,English,Windows,2023-12,0.001 GB,https://portableapps.com/apps/security/eraser-portable
+Files,7-Zip Portable,English,Windows,2023-12,0.003 GB,https://portableapps.com/apps/utilities/7-zip_portable
+Files,BalenaEtcher Portable,English,Windows,2023-12,0.128 GB,https://portableapps.com/apps/utilities/balenaetcher-portable
