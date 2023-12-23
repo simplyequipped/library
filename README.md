@@ -35,6 +35,7 @@ The following platforms are supported by the included kiwix-tools:
 - Linux ARM HF (Raspberry Pi)
 - Linux ARM v6
 - Linux ARM v8
+- Linux AARCH64
 - Darmin (MacOS) x86
 - Darmin (MacOS) ARM
 

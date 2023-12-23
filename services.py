@@ -105,6 +105,7 @@ class Service:
         # linux-armhf (raspberry pi)
         # linux-armv6
         # linux-armv8
+        # linux-aarch64
         # darmin-x86 (macos)
         # darmin-arm (macos)
         
@@ -127,12 +128,16 @@ class Service:
                     model = f.read()
                     if 'Raspberry Pi' in model:
                         _arch = 'armhf'
-                
+
+        elif 'aarch64' in machine:
+            _arch = 'aarch64'
+
         elif '64' in machine:
             if '86' in machine or 'AMD' in machine:
                 _arch = 'x86'
             else:
                 _arch = None
+
         else:
             _arch = 'x86'
     
@@ -142,7 +147,7 @@ class Service:
             raise OSError('Architecture \'{}\' not supported'.format(machine))
         if _os == 'windows' and _arch not in ['x86']:
             raise OSError('Architecture \'{}\' not supported on Windows'.format(machine))
-        elif _os == 'linux' and _arch not in ['x86', 'armhf', 'armv6', 'armv8']:
+        elif _os == 'linux' and _arch not in ['x86', 'armhf', 'armv6', 'armv8', 'aarch64']:
             raise OSError('Architecture \'{}\' not supported on Linux'.format(machine))
         elif _os == 'darwin' and _arch not in ['x86', 'arm']:
             raise OSError('Architecture \'{}\' not supported on Darwin (MacOS)'.format(machine))
