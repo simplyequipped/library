@@ -24,11 +24,11 @@ class Library:
 
         # use kiwix-manage to build new library file
         cmd = '{} {} add {}'.format( tools.kiwix_manage_path(), self.path, ' '.join(zim_files) )
-        subprocess.Popen(cmd, shell=True)
+        subprocess.run(cmd, shell=True)
 
     def add(self, zim_path):
         cmd = '{} {} add {}'.format(tools.kiwix_manage_path(), self.path, zim_path)
-        subprocess.Popen(cmd, shell=True)
+        subprocess.run(cmd, shell=True)
 
 
     
