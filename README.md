@@ -10,7 +10,7 @@ Offline library services for hosting and accessing ZIM content and other files l
 
 ## Getting Started
 - Add content to *kiwix/zim-reference* and *kiwix/zim-forum* (see section **Recommended Content**)
-- Run *start_library.py*: `python start_library.py`
+- Run *Offline Library.bat* on Windows, or *Offline Library* on Linux or MacOS
 - Use the browser window (opened automatically) to navigate the offline content
 
 ## Services
@@ -43,6 +43,16 @@ The following platforms are supported by the included kiwix-tools:
 - Linux AARCH64
 - Darmin (MacOS) x86
 - Darmin (MacOS) ARM
+
+## Examples
+```
+# show help docs
+python start_library.py --help
+
+# specify http server port for landing page
+# ports for the other services will increment from the specified port
+python start_library.py --port 8080
+```
 
 ## Recommended Content
 
