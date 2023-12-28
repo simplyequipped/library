@@ -10,10 +10,8 @@ Offline library services for hosting and accessing ZIM content and other files l
 - Automatic download and organization of recommended content
 
 ## Getting Started
-1. Download this repository
-
-    - Open a web browser and navigate to [https://github.com/simplyequipped/library](https://github.com/simplyequipped/library)
-    - Download the repository as a zip file and extract it where you want the library to reside (ex. external drive)
+1. Download the repository as a zip file and extract it where you want the library to reside (ex. external drive)
+   ![github-download-zip](libraryservices/static/github-download-zip.png)
 
 2. Run *Offline Library.bat* on Windows, or *Offline Library* on Linux or MacOS
 3. Use the browser window (opened automatically) to download and navigate the offline content
