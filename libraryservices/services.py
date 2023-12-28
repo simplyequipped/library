@@ -125,11 +125,18 @@ class HTTPService (Service):
         self.server = ThreadedHTTPServer(server_address, LibraryRequestHandler, self.parent)
 
         # non-blocking server loop
-        thread = threading.Thread(target=self.server.serve_forever)
+        thread = threading.Thread(target=self._serve)
         thread.daemon = True
         thread.start()
 
         self.running = True
+
+    def _serve(self):
+        try:
+            # handle exception when services are stopped
+            self.server.serve_forever()
+        except Exception:
+            pass
 
     def stop(self):
         self.server.server_close()
