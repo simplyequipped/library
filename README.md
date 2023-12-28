@@ -176,10 +176,6 @@ The total size of the recommended content is 548 GB (1 TB drive recommended). Se
 | 7-Zip Portable     | English  | Windows   | 2023-12 | 3 MB    | [Download](https://portableapps.com/apps/utilities/7-zip_portable)                                                      |
 | BalenaEtcher Portable | English | Windows | 2023-12 | 131 MB  | [Download](https://portableapps.com/apps/utilities/balenaetcher-portable)                                               |
 
-## To Do
-- Add JS8Call Guide to repo, since URL is a Google Doc
-- Update Portable Apps urls in recommended_content.csv to point to exe files
-
 ## Attribution
 
 Kiwix tools and the linked ZIM libraries are provided by the [Kiwix Association](https://kiwix.org).
