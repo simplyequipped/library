@@ -22,7 +22,9 @@ The *reference* service uses `kiwix-serve` to host ZIM content, and is intended 
 The *forums* service uses `kiwix-serve` to host ZIM content, and is intended for forum content such as [StackExchange](https://library.kiwix.org/#lang=eng&category=stack_exchange). ZIM files can be added to *zim-forum/, and then added to the *kiwix/library_forum.xml* library file using *kiwix-manage*. This process is handled automatically for recommended content.
 
 ### Files
-The *files* service uses `python http.server` to host miscellaneous file content. Files should be added to *files/*
+The *files* service uses `python http.server` to host miscellaneous file content. Files should be added to *files/*. This process is handled automatically for recommended content.
+
+**Note:** Portable Apps at the end of the *Recommended Content - Files* section should be downloaded manually due to the layout of the Portable Apps website.
 
 ### Landing
 The *landing* service uses a subclassed `python http.server` instance to host a landing webpage which simplifies downloading recommended content and navigating to the other servies.
@@ -61,6 +63,8 @@ python -m libraryservices --csv ./custom_content.csv
 ## Recommended Content
 
 The total size of the recommended content is 548 GB (1 TB drive recommended). See the [Kiwix Library](https://library.kiwix.org/) for more ZIM content.
+
+**Note:** Portable Apps at the end of the *Recommended Content - Files* section should be downloaded manually due to the layout of the Portable Apps website.
 
 ### Reference ZIM Files (526 GB)
 | Title              | Language | Variant   | Date    | Size    | Link                                                                                                                    |
