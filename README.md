@@ -47,6 +47,8 @@ The following platforms are supported by the included kiwix-tools:
 - Darmin (MacOS) x86
 - Darmin (MacOS) ARM
 
+**NOTE:** kiwix-tools for x86 are always used on Windows regardless of the detected architecture. This has been tested on a MS Surface Pro X with arm64 architecture.
+
 ## Examples
 ```
 # show help docs
@@ -63,7 +65,7 @@ python -m libraryservices --csv ./custom_content.csv
 
 ## Recommended Content
 
-The total size of the recommended content is 548 GB (1 TB drive recommended). See the [Kiwix Library](https://library.kiwix.org/) for more ZIM content.
+The total size of the recommended content is 629 GB (1 TB drive recommended). See the [Kiwix Library](https://library.kiwix.org/) for more ZIM content.
 
 **Note:** Portable Apps at the end of the *Recommended Content - Files* section should be downloaded manually due to the layout of the Portable Apps website.
 
