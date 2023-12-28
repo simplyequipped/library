@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Offline Library</title>
+    <style>
+        body {
+            width: 50%;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        h4 {
+            text-align: left;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #0288d1;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #01579b; /* darker shade on hover */
+        }
+        .btn.disabled {
+            background-color: #ccc;
+            color: #333;
+        }
+        .btn.disabled:hover {
+            background-color: #ccc;
+        }
+        .hidden {
+            display: none;
+        }
+        .outline {
+            max-height: 100px;
+            overflow: auto;
+            border: 1px solid #ccc;
+            text-align: left;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #progress {
+            display: inline;
+            font-weight: normal;
+            text-align: left;
+            padding: 10px;
+        }
+    </style>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body>
+    <h1>Offline Library</h1>
+    <br >
+    <a href="#" id="download-btn" class="btn" onclick="download_start()">Download Content ({content_size} GB)</a><br>
+    <a href="http://localhost:{port}/reference" class="btn">Reference</a><br>
+    <a href="http://localhost:{port}/forum" class="btn">Forums</a><br>
+    <a href="http://localhost:{port}/files" class="btn">Files</a><br>
+    <a href="#" class="btn" onclick="quit()">Quit</a><br>
+    <br>
+    <!-- Hidden message element -->
+    <div id="message" class="hidden"></div><br>
+    <h4 id="progress-title" class="hidden">Progress: <div id="progress" class="hidden"></div><br></h4>
+    <h4 id="downloading-title" class="hidden">Downloading</h4>
+    <div id="downloading" class="hidden outline"></div>
+    <h4 id="downloaded-title" class="hidden">Downloaded</h4>
+    <div id="downloaded" class="hidden outline"></div>
+    <h4 id="skipped-title" class="hidden">Skipped</h4>
+    <div id="skipped" class="hidden outline"></div>
+    
+    <script>
+//        const http = require('http');
+//
+//        function checkServerRunning(port) {
+//            return new Promise((resolve, reject) => {
+//                const options = {
+//                    hostname: 'localhost',
+//                    port: port,
+//                    path: '/',
+//                    method: 'GET',
+//                };
+//
+//                const req = http.request(options, (res) => {
+//                    if (res.statusCode === 200) {
+//                        resolve(true);
+//                    }
+//                    else {
+//                        resolve(false);
+//                    }
+//                });
+//
+//                req.on('error', (error) => {
+//                    resolve(false);
+//                });
+//
+//                req.end();
+//            });
+//        }
+//
+//        const button1 = document.getElementById('button1');
+//        const button2 = document.getElementById('button2');
+//        const button3 = document.getElementById('button3');
+//
+//        const portsToCheck = [3000, 4000, 5000];
+//
+//        portsToCheck.forEach((port) => {
+//            checkServerRunning(port)
+//            .then((isRunning) => {
+//                if (!isRunning) {
+//                    if (port === 3000) {
+//                        button1.disabled = true;
+//                    }
+//                    else if (port === 4000) {
+//                        button2.disabled = true;
+//                    }
+//                    else if (port === 5000) {
+//                        button3.disabled = true;
+//                    }
+//                }
+//            })
+//            .catch((error) => {
+//                console.error('Error:', error);
+//            });
+//        });
+
+//        function quit() {
+//            var messageDiv = document.getElementById('message');
+//            quit_response = ajax_signal( 'quit' )
+//            if 
+//                        messageDiv.innerHTML = 'Services stopped successfully.';
+//                    } else {
+//                        messageDiv.innerHTML = 'Failed to stop services.';
+//                    }
+//                    messageDiv.classList.remove('hidden');
+//                }
+//            };
+//            xhr.onerror = function () {
+//                var messageDiv = document.getElementById('message');
+//                messageDiv.innerHTML = 'An error occurred while contacting the server.';
+//                messageDiv.classList.remove('hidden');
+//            };
+//            xhr.send(JSON.stringify({ signal: 'quit' }));
+//        }
+
+        function quit() {
+            var messageDiv = document.getElementById('message');
+            var progressDiv = document.getElementById('progress');
+            var progressTitleDiv = document.getElementById('progress-title');
+            var downloadingDiv = document.getElementById('downloading');
+            var downloadingTitleDiv = document.getElementById('downloading-title');
+            var downloadedDiv = document.getElementById('downloaded');
+            var downloadedTitleDiv = document.getElementById('downloaded-title');
+            var skippedDiv = document.getElementById('skipped');
+            var skippedTitleDiv = document.getElementById('skipped-title');
+            var btnClass = document.getElementsByClassName('btn');
+
+            ajax_signal('quit')
+                .then( function(response) {
+                    progressDiv.classList.add('hidden');
+                    progressTitleDiv.classList.add('hidden');
+                    downloadingDiv.classList.add('hidden');
+                    downloadingTitleDiv.classList.add('hidden');
+                    downloadedDiv.classList.add('hidden');
+                    downloadedTitleDiv.classList.add('hidden');
+                    skippedDiv.classList.add('hidden');
+                    skippedTitleDiv.classList.add('hidden');
+
+                    messageDiv.innerHTML = 'Services stopped successfully. You can close the broswer now.';
+                    messageDiv.classList.remove('hidden');
+
+                    for (i=0; i < btnClass.length; i++) {
+                        btnClass[i].classList.add('disabled');
+                        btnClass[i].href = '#';
+                    }
+                })
+                .catch( function(error) {
+                    messageDiv.innerHTML = 'Failed to stop services.';
+                    messageDiv.classList.remove('hidden');
+                });
+
+        }
+
+        DOWNLOAD_PROGRESS_INTERVAL = 1 * 1000;
+        DOWNLOAD_DOWNLOADS_INTERVAL = 2 * 1000;
+        DOWNLOAD_COMPLETE = false;
+
+        DOWNLOAD_PROGRESS_INTERVAL_ID = null;
+        DOWNLOAD_DOWNLOADING_INTERVAL_ID = null;
+        DOWNLOAD_DOWNLOADED_INTERVAL_ID = null;
+        DOWNLOAD_SKIPPED_INTERVAL_ID = null;
+
+        function download_start() {
+            var messageDiv = document.getElementById('message');
+            var progressDiv = document.getElementById('progress');
+            var progressTitleDiv = document.getElementById('progress-title');
+
+            ajax_signal('download_start')
+                .then( function(response) {
+                    progressDiv.innerHTML = response + '%';
+                    progressDiv.classList.remove('hidden');
+                    progressTitleDiv.classList.remove('hidden');
+
+                    download_downloading();
+                    download_downloaded();
+                    download_skipped();
+
+                    DOWNLOAD_PROGRESS_INTERVAL_ID = setInterval(download_progress, DOWNLOAD_PROGRESS_INTERVAL);
+                    DOWNLOAD_DOWNLOADING_INTERVAL_ID = setInterval(download_downloading, DOWNLOAD_DOWNLOADS_INTERVAL);
+                    DOWNLOAD_DOWNLOADED_INTERVAL_ID = setInterval(download_downloaded, DOWNLOAD_DOWNLOADS_INTERVAL);
+                    DOWNLOAD_SKIPPED_INTERVAL_ID = setInterval(download_skipped, DOWNLOAD_DOWNLOADS_INTERVAL);
+                })
+                .catch( function(error) {
+                    messageDiv.innerHTML = 'Failed to download content.';
+                    messageDiv.classList.remove('hidden');
+                })
+        }
+
+        function download_progress() {
+            var progressDiv = document.getElementById('progress');
+            var progressTitleDiv = document.getElementById('progress-title');
+            var downloadingDiv = document.getElementById('downloading');
+            var downloadingTitleDiv = document.getElementById('downloading-title');
+            var downloadBtn = document.getElementById('download-btn');
+            var messageDiv = document.getElementById('message');
+
+            ajax_signal('download_progress')
+                .then( function(response) {
+                    progressDiv.innerHTML = response + '%';
+                    progressDiv.classList.remove('hidden');
+                    progressTitleDiv.classList.remove('hidden');
+
+                    // check if downloading complete
+                    if (parseInt(response) > 98) {
+                        ajax_signal('download_complete')
+                            .then( function(response) {
+                                if (response === true) {
+                                    // clear intervals
+                                    clearInterval(DOWNLOAD_PROGRESS_INTERVAL_ID);
+                                    clearInterval(DOWNLOAD_DOWNLOADING_INTERVAL_ID);
+                                    clearInterval(DOWNLOAD_DOWNLOADED_INTERVAL_ID);
+                                    clearInterval(DOWNLOAD_SKIPPED_INTERVAL_ID);
+
+                                    download_downloading();
+                                    download_downloaded();
+                                    download_skipped();
+
+                                    DOWNLOAD_COMPLETE = true;
+
+                                    downloadBtn.classList.add('disabled');
+                                    downloadBtn.href = '#';
+
+                                    downloadingDiv.classList.add('hidden');
+                                    downloadingTitleDiv.classList.add('hidden');
+                                    messageDiv.innerHTML = 'Download complete.';
+                                    messageDiv.classList.remove('hidden');
+                                }
+                            });
+                    }
+                })
+        }
+
+        function download_downloading() {
+            var downloadingDiv = document.getElementById('downloading');
+            var downloadingTitleDiv = document.getElementById('downloading-title');
+
+            ajax_signal('download_downloading')
+                .then( function(response) {
+                    if (response.length > 0) {
+                        downloadingDiv.classList.add('hidden');
+                        downloadingDiv.innerHTML = '';
+
+                        response.forEach(function (element, index) {
+                            newDiv = document.createElement('div');
+                            newDiv.textContent = element;
+                            downloadingDiv.append(newDiv);
+                        });
+
+                        downloadingDiv.classList.remove('hidden');
+                        downloadingTitleDiv.classList.remove('hidden');
+                    }
+                });
+        }
+
+        function download_downloaded() {
+            var downloadedDiv = document.getElementById('downloaded');
+            var downloadedTitleDiv = document.getElementById('downloaded-title');
+
+            ajax_signal('download_downloaded')
+                .then( function(response) {
+                    if (response.length > 0) {
+                        downloadedDiv.classList.add('hidden');
+                        downloadedDiv.innerHTML = '';
+
+                        response.forEach(function (element, index){
+                            newDiv = document.createElement('div');
+                            newDiv.textContent = element;
+                            downloadedDiv.append(newDiv);
+                        });
+
+                        downloadedDiv.scrollTop = downloadedDiv.scrollHeight;
+                        downloadedDiv.classList.remove('hidden');
+                        downloadedTitleDiv.classList.remove('hidden');
+                    }
+                });
+        }
+
+        function download_skipped() {
+            var skippedDiv = document.getElementById('skipped');
+            var skippedTitleDiv = document.getElementById('skipped-title');
+
+            ajax_signal('download_skipped')
+                .then( function(response) {
+                    if (response.length > 0) {
+                        skippedDiv.classList.add('hidden');
+                        skippedDiv.innerHTML = '';
+
+                        response.forEach(function (element, index){
+                            newDiv = document.createElement('div');
+                            newDiv.textContent = element;
+                            skippedDiv.append(newDiv);
+                        });
+
+                        skippedDiv.scrollTop = skippedDiv.scrollHeight;
+                        skippedDiv.classList.remove('hidden');
+                        skippedTitleDiv.classList.remove('hidden');
+                    }
+                });
+        }
+
+        function ajax_signal( _signal, _data=null ) {
+            return new Promise(function(resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:{port}/signals', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        resolve( JSON.parse(xhr.responseText)['data'] );
+                    } else {
+                        reject( null ); 
+                    }
+                };
+                xhr.send( JSON.stringify( { signal: _signal, data: _data } ) );
+            });
+        }
+    </script>
+</body>
+</html>

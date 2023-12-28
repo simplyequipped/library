@@ -59,8 +59,18 @@ def platform_info():
 
     return (_os, _arch, _bit)
 
+def root_path():
+    cwd = os.getcwd()
+
+    if cwd.endswith('library'):
+        return cwd
+    elif cwd.endswith('libraryservices'):
+        return os.path.abspath(os.path.join(cwd, '..'))
+    else:
+        raise OSError('Library services must be started from the directory containing the associated files.')
+
 def kiwix_path():
-    return os.path.join(os.getcwd(), 'kiwix')
+    return os.path.join(root_path(), 'libraryservices/kiwix')
 
 def kiwix_tools_path():
     global OS
@@ -108,7 +118,7 @@ def kiwix_library_path(service):
 
 def kiwix_zim_path(service, make_dirs=True):
     zim_path = 'zim-{}'.format(service)
-    zim_path = os.path.join(kiwix_path(), zim_path)
+    zim_path = os.path.join(root_path(), zim_path)
 
     if not os.path.exists(zim_path) and make_dirs:
         os.makedirs(zim_path)
@@ -116,7 +126,10 @@ def kiwix_zim_path(service, make_dirs=True):
     return zim_path
 
 def files_path():
-    return os.path.join(os.getcwd(), 'files')
+    return os.path.join(root_path(), 'files')
+
+def http_static_path():
+    return os.path.join(root_path(), 'libraryservices/static')
 
 
 # parse platform info on import

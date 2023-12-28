@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import shlex
 import socket
 import platform
@@ -7,9 +8,8 @@ import threading
 import subprocess
 
 # local imports
-import tools
-import zimlibrary
-from libraryserver import ThreadedHTTPServer, LibraryRequestHandler
+import libraryservices
+from libraryservices.server import ThreadedHTTPServer, LibraryRequestHandler
 
 
 class Service:
@@ -24,6 +24,7 @@ class Service:
         self.running = False
         self.type = None
         self.parent = parent
+        self.file_path = None
         self._process = None
         self._process_cmd = None
         self._process_shell = True
@@ -49,6 +50,11 @@ class Service:
             self._process = subprocess.Popen(cmd, shell=self._process_shell, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
         self.running = True
+
+    def restart(self):
+        self.stop()
+        time.sleep(0.5)
+        self.start()
 
     def stop(self):
         if self._process is None:
@@ -82,13 +88,14 @@ class KiwixService (Service):
     def __init__(self, parent, name, port=None):
         super().__init__(parent, name, port)
         self.type = Service.KIWIX
-        self.library = zimlibrary.Library(self.name)
+        self.path = os.path.join(libraryservices.kiwix_zim_path(self.name))
+        self.library = libraryservices.ZimLibrary(self.name)
         # rebuild zim library, ensures correct path separators for current platform
         self.library.build()
         
     def start(self):
-        # windows example: start /b D:\kiwix\kiwix-tools-windows-x86\kiwix-serve.exe --port 8001 --library D:\kiwix\library_reference.xml
-        self._process_cmd = '{} --port {} --library {}'.format(tools.kiwix_serve_path(), self.port, self.library.path)
+        # windows example: start /b D:\kiwix\kiwix-utilities.windows-x86\kiwix-serve.exe --port 8001 --library D:\kiwix\library_reference.xml
+        self._process_cmd = '{} --port {} --library {}'.format(libraryservices.KIWIX_SERVE_PATH, self.port, self.library.path)
         super().start()
 
 
@@ -96,10 +103,11 @@ class FilesService (Service):
     def __init__(self, parent, name, port=None):
         super().__init__(parent, name, port)
         self.type = Service.FILES
+        self.path = libraryservices.FILES_PATH
         
     def start(self):
         # example: python -m http.server 8003 --directory /mnt/ext/files
-        self._process_cmd = '{} -m http.server {} --directory {}'.format(sys.executable, self.port, tools.files_path())
+        self._process_cmd = '{} -m http.server {} --directory {}'.format(sys.executable, self.port, libraryservices.FILES_PATH)
         super().start()
 
 
@@ -133,6 +141,7 @@ class Services:
         self._services = {}
         self.all_stopped = False
         self.debug = False
+        self.content = libraryservices.DownloadContent()
         
     def __getitem__(self, name):
         return self._services[name]
@@ -168,11 +177,31 @@ class Services:
         for service in self._services.values():
             service.start()
 
+    def restart_except_http(self):
+        for service in self._services.values():
+            if service.type == Service.HTTP:
+                continue
+
+            service.restart()
+
+    def stop_except_http(self):
+        for service in self._services.values():
+            if service.type == Service.HTTP:
+                continue
+
+            service.stop()
+
     def stop_all(self):
         for service in self._services.values():
             service.stop()
 
         self.all_stopped = True
+
+    def rebuild_zim(self):
+        for service in self._services.values():
+            if service.type == Service.KIWIX:
+                service.library.build()
+                service.restart()
 
     def next_port(self):
         ports = [service.port for service in self._services.values()]

@@ -1,24 +1,27 @@
 import os
 import csv
+import threading
 import urllib.request
 
 from concurrent.futures import ThreadPoolExecutor
 
 # local imports
-import tools
+import libraryservices
 
 
 class DownloadContent:
     # status
     NOT_STARTED = 'not started'
     DOWNLOADING = 'downloading'
+    PAUSED = 'paused'
+    STOPPED = 'stopped'
     COMPLETE = 'complete'
 
-    def __init__(self, csv_file):
+    def __init__(self, csv_file=None):
         self.status = DownloadContent.NOT_STARTED
-        self.csv_file = csv_file
         self._url_size_data = {}
         self.urls = {}
+        self.total_size = 0
         self.downloading = []
         self.downloaded = []
         self.failed = []
@@ -30,6 +33,25 @@ class DownloadContent:
         self._downloading_callback = None
         self._progress_callback = None
 
+        if csv_file is not None:
+            self.set_csv_file(csv_file)
+        else:
+            self.csv_file = None
+
+    def pause(self):
+        if self.status == DownloadContent.DOWNLOADING:
+            self.status = DownloadContent.PAUSED
+
+    def resume(self):
+        if self.status == DownloadContent.PAUSED:
+            self.status = DownloadContent.DOWNLOADING
+
+    def stop(self):
+        if self.status in [DownloadContent.DOWNLOADING, DownloadContent.PAUSED]:
+            self.status = DownloadContent.STOPPED
+
+    def set_csv_file(self, csv_file):
+        self.csv_file = csv_file
         self._parse_csv()
         self.total_size = sum( [size for size in self._url_size_data.values()] )
 
@@ -43,20 +65,40 @@ class DownloadContent:
         self._progress_callback = callback
 
     def services(self):
-        return self.urls.keys()
+        return list(self.urls.keys())
 
     def progress(self):
         complete_urls = self.downloaded + self.skipped + self.failed
-        complete_size = sum( [size for url, size in self._size_data if url in complete_urls] )
+        complete_size = sum( [size for url, size in self._url_size_data.items() if url in complete_urls] )
         # percentage
         return int( (complete_size / self.total_size) * 100 )
 
+    def complete(self):
+        return bool(self.status == DownloadContent.COMPLETE)
+
     def download(self):
+        thread = threading.Thread(target=self._download)
+        thread.daemon = True
+        thread.start()
+
+    def _download(self):
         self.status = DownloadContent.DOWNLOADING
 
         for service in self.urls:
-            # use the service specifc zim path as the destination
-            self._destination_dir = tools.kiwix_zim_path(service)
+            if service == 'files':
+                self._destination_dir = libraryservices.FILES_PATH
+            else:
+                # use the service specifc zim path as the destination
+                self._destination_dir = libraryservices.kiwix_zim_path(service)
+
+            while self.status == DownloadContent.PAUSED:
+                if self.status == DownloadContent.STOPPED:
+                    return
+                time.sleep(0.5)
+
+            if self.status == DownloadContent.STOPPED:
+                return
+
             # download files concurrently
             with ThreadPoolExecutor(max_workers=self.max_concurrent_downloads) as executor:
                 executor.map(self._download_file, self.urls[service])
@@ -66,6 +108,9 @@ class DownloadContent:
             self._complete_callback(self)
 
     def _download_file(self, url):
+        if self.status == DownloadContent.STOPPED:
+            return
+
         try:
             file_name = url.split('/')[-1]
             file_path = os.path.join(self._destination_dir, file_name)
@@ -78,7 +123,7 @@ class DownloadContent:
 
                 return
 
-            self.downloading.append(file_name)
+            self.downloading.append(url)
             if self._downloading_callback is not None:
                 self._downloading_callback( self.downloading )
 
@@ -88,7 +133,7 @@ class DownloadContent:
         except Exception as e:
             self.failed.append(url)
 
-        self.downloading.remove(file_name)
+        self.downloading.remove(url)
 
         if self._progress_callback is not None:
             self._progress_callback( self.progress() )
@@ -103,7 +148,7 @@ class DownloadContent:
                 if len(row) == 0:
                     continue
 
-                service = row[0].lower()
+                service = row[0].strip().lower()
                 
                 # skip title row
                 if service == 'service':
@@ -113,8 +158,8 @@ class DownloadContent:
                 if service not in self.urls:
                     self.urls[service] = []
         
-                url = row[6]
-                file_size = float(row[5].split()[0])
+                url = row[6].strip()
+                file_size = float(row[5].strip().split()[0])
                 self._url_size_data[url] = file_size
                 self.urls[service].append(url)
 
