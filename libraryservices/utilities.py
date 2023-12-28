@@ -50,8 +50,9 @@ def platform_info():
 
     if _arch is None:
         raise OSError('Architecture \'{}\' not supported'.format(machine))
-    if _os == 'windows' and _arch not in ['x86']:
-        raise OSError('Architecture \'{}\' not supported on Windows'.format(machine))
+    # use x86 on windows for any architecture (x86 kiwix-tools tested on arm64 MS Surface Pro X)
+    #if _os == 'windows' and _arch not in ['x86']:
+    #    raise OSError('Architecture \'{}\' not supported on Windows'.format(machine))
     elif _os == 'linux' and _arch not in ['x86', 'armhf', 'armv6', 'armv8', 'aarch64']:
         raise OSError('Architecture \'{}\' not supported on Linux'.format(machine))
     elif _os == 'darwin' and _arch not in ['x86', 'arm']:
@@ -76,7 +77,12 @@ def kiwix_tools_path():
     global OS
     global ARCH
 
-    tools_path = 'kiwix-tools-{}-{}'.format(OS, ARCH)
+    if OS == 'windows':
+        # use x86 on windows for any architecture (x86 kiwix-tools tested on arm64 MS Surface Pro X)
+        tools_path = 'kiwix-tools-{}-{}'.format(OS, 'x86')
+    else:
+        tools_path = 'kiwix-tools-{}-{}'.format(OS, ARCH)
+
     return os.path.join(kiwix_path(), tools_path)
 
 def kiwix_manage_path():
