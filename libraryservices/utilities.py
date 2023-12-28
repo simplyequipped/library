@@ -49,13 +49,13 @@ def platform_info():
     _bit = platform.architecture()[0].replace('bit', '')
 
     if _arch is None:
-        raise _osError('Architecture \'{}\' not supported'.format(machine))
+        raise OSError('Architecture \'{}\' not supported'.format(machine))
     if _os == 'windows' and _arch not in ['x86']:
-        raise _osError('Architecture \'{}\' not supported on Windows'.format(machine))
+        raise OSError('Architecture \'{}\' not supported on Windows'.format(machine))
     elif _os == 'linux' and _arch not in ['x86', 'armhf', 'armv6', 'armv8', 'aarch64']:
-        raise _osError('Architecture \'{}\' not supported on Linux'.format(machine))
+        raise OSError('Architecture \'{}\' not supported on Linux'.format(machine))
     elif _os == 'darwin' and _arch not in ['x86', 'arm']:
-        raise _osError('Architecture \'{}\' not supported on Darwin (MacOS)'.format(machine))
+        raise OSError('Architecture \'{}\' not supported on Darwin (MacOS)'.format(machine))
 
     return (_os, _arch, _bit)
 
