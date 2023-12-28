@@ -6,26 +6,26 @@ Offline library services for hosting and accessing ZIM content and other files l
 - All services are designed to run without internet access (after content has been downloaded)
 - All services are designed to run from a USB flash drive or other external drive
 - Only requires Python3 and the contents of this repository (after content has been downloaded)
-- Automatic selection of the appropriate kiwix-tools based on device platform (see section **kiwix-tools** for supported platforms)
+- Automatic selection of the appropriate kiwix-tools based on device platform (see **kiwix-tools** section for supported platforms)
 
 ## Getting Started
-- Add content to *kiwix/zim-reference* and *kiwix/zim-forum* (see section **Recommended Content**)
+- Download this repo
 - Run *Offline Library.bat* on Windows, or *Offline Library* on Linux or MacOS
-- Use the browser window (opened automatically) to navigate the offline content
+- Use the browser window (opened automatically) to download and navigate the offline content
 
 ## Services
 
 ### Reference
-The *reference* service uses `kiwix-serve` to host ZIM content, and is intended for reference content such as [Wikipedia](https://library.kiwix.org/#lang=eng&category=wikipedia). ZIM files should be added to *kiwix/zim-reference* and added to the *kiwix/library_reference.xml* library file.
+The *reference* service uses `kiwix-serve` to host ZIM content, and is intended for reference content such as [Wikipedia](https://library.kiwix.org/#lang=eng&category=wikipedia). ZIM files can be added to *zim-reference/*, and then added to the *kiwix/library_reference.xml* library file using *kiwix-manage*. This process is handled automatically for recommended content.
 
 ### Forums
-The *forums* service uses `kiwix-serve` to host ZIM content, and is intended for forum content such as [StackExchange](https://library.kiwix.org/#lang=eng&category=stack_exchange). ZIM files should be added to *kiwix/zim-forum* and added to the *kiwix/library_forum.xml* library file.
+The *forums* service uses `kiwix-serve` to host ZIM content, and is intended for forum content such as [StackExchange](https://library.kiwix.org/#lang=eng&category=stack_exchange). ZIM files can be added to *zim-forum/, and then added to the *kiwix/library_forum.xml* library file using *kiwix-manage*. This process is handled automatically for recommended content.
 
 ### Files
 The *files* service uses `python http.server` to host miscellaneous file content. Files should be added to *files/*
 
 ### Landing
-The *landing* service uses a subclassed `python http.server` instance to host a landing webpage which makes navigating to the other servies easier.
+The *landing* service uses a subclassed `python http.server` instance to host a landing webpage which simplifies downloading recommended content and navigating to the other servies.
 
 ## kiwix-tools
 
@@ -47,11 +47,15 @@ The following platforms are supported by the included kiwix-tools:
 ## Examples
 ```
 # show help docs
-python start_library.py --help
+python -m libraryservices --help
 
 # specify http server port for landing page
 # ports for the other services will increment from the specified port
-python start_library.py --port 8080
+python -m libraryservices --port 8080
+
+# specify a csv file with content download data for use via the web interface
+# be sure to include a leading `./` or `../` when using a relative path
+python -m libraryservices --csv ./custom_content.csv
 ```
 
 ## Recommended Content
@@ -169,7 +173,8 @@ The total size of the recommended content is 548 GB (1 TB drive recommended). Se
 | BalenaEtcher Portable | English | Windows | 2023-12 | 131 MB  | [Download](https://portableapps.com/apps/utilities/balenaetcher-portable)                                               |
 
 ## To Do
-- Create a list of the recommended downloads in a format that can be automatically downloaded via a script
+- Add JS8Call Guide to repo, since URL is a Google Doc
+- Update Portable Apps urls in recommended_content.csv to point to exe files
 
 ## Attribution
 
